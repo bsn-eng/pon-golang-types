@@ -1,7 +1,6 @@
 package beaconclient
 
 import (
-
 	"github.com/attestantio/go-eth2-client/spec/capella"
 )
 
@@ -10,14 +9,6 @@ type PubkeyHex string
 type ValidatorData struct {
 	Pubkey         PubkeyHex
 	ValidatorIndex uint64
-}
-
-type GetGenesisResponse struct {
-	Data struct {
-		GenesisTime           uint64 `json:"genesis_time,string"`
-		GenesisValidatorsRoot string `json:"genesis_validators_root"`
-		GenesisForkVersion    string `json:"genesis_fork_version"`
-	}
 }
 
 type HeadEventData struct {
@@ -40,4 +31,10 @@ type PayloadAttributes struct {
 	PrevRandao            string                `json:"prev_randao"`
 	SuggestedFeeRecipient string                `json:"suggested_fee_recipient"`
 	Withdrawals           []*capella.Withdrawal `json:"withdrawals"`
+}
+
+type GenesisInfo struct {
+	GenesisTime           uint64 `json:"genesis_time,string"`
+	GenesisValidatorsRoot string `json:"genesis_validators_root"`
+	GenesisForkVersion    string `json:"genesis_fork_version"`
 }
