@@ -57,3 +57,7 @@ type ProposerDutyData struct {
 }
 
 type WithdrawalData capella.Withdrawal
+
+type RandaoData struct {
+	CurrentEpoch uint64 `json:"current_epoch,string"`
+}

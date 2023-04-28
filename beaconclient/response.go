@@ -19,3 +19,7 @@ type GetValidatorsResponse struct {
 type GetProposerDutiesResponse struct {
 	Data []*ProposerDutyData `json:"data"`
 }
+
+type GetRandaosResponse struct {
+	Data *RandaoData `json:"data"`
+}
