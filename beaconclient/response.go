@@ -1,9 +1,5 @@
 package beaconclient
 
-import (
-	"github.com/attestantio/go-eth2-client/spec/capella"
-)
-
 type GetGenesisResponse struct {
 	Data *GenesisData `json:"data"`
 }
