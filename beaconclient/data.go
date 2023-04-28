@@ -55,3 +55,5 @@ type ProposerDutyData struct {
 	Slot      uint64 `json:"slot"`
 	Index     uint64 `json:"validator_index"`
 }
+
+type WithdrawalData capella.Withdrawal

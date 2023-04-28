@@ -9,7 +9,7 @@ type GetGenesisResponse struct {
 }
 
 type GetWithdrawalsResponse struct {
-	Data []*capella.Withdrawal `json:"data"`
+	Data []*WithdrawalData `json:"data"`
 }
 
 type GetSyncStatusResponse struct {
