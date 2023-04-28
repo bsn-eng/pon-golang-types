@@ -2,6 +2,7 @@ package beaconclient
 
 import (
 	"github.com/attestantio/go-eth2-client/spec/capella"
+	"github.com/ethereum/go-ethereum/common"
 )
 
 type PubkeyHex string
@@ -59,5 +60,5 @@ type ProposerDutyData struct {
 type WithdrawalData capella.Withdrawal
 
 type RandaoData struct {
-	CurrentEpoch uint64 `json:"current_epoch,string"`
+	Randao common.Hash `json:"randao"`
 }
