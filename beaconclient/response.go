@@ -13,7 +13,7 @@ type GetWithdrawalsResponse struct {
 }
 
 type GetSyncStatusResponse struct {
-	Data SyncStatusData
+	Data *SyncStatusData
 }
 
 type GetValidatorsResponse struct {
