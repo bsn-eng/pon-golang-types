@@ -7,8 +7,14 @@ import (
 type PubkeyHex string
 
 type ValidatorData struct {
-	Pubkey         PubkeyHex
-	ValidatorIndex uint64
+	Index     uint64           `json:"index,string"`
+	Balance   string           `json:"balance"` // In gwei.
+	Status    string           `json:"status"`
+	Validator ValidatorDetails `json:"validator"`
+}
+
+type ValidatorDetails struct {
+	Pubkey string `json:"pubkey"`
 }
 
 type HeadEventData struct {
@@ -33,8 +39,19 @@ type PayloadAttributes struct {
 	Withdrawals           []*capella.Withdrawal `json:"withdrawals"`
 }
 
-type GenesisInfo struct {
+type GenesisData struct {
 	GenesisTime           uint64 `json:"genesis_time,string"`
 	GenesisValidatorsRoot string `json:"genesis_validators_root"`
 	GenesisForkVersion    string `json:"genesis_fork_version"`
+}
+
+type SyncStatusData struct {
+	HeadSlot  uint64 `json:"head_slot,string"`
+	IsSyncing bool   `json:"is_syncing"`
+}
+
+type ProposerDutyData struct {
+	PubkeyHex string `json:"pubkey"`
+	Slot      uint64 `json:"slot"`
+	Index     uint64 `json:"validator_index"`
 }
