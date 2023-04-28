@@ -20,6 +20,6 @@ type GetProposerDutiesResponse struct {
 	Data []*ProposerDutyData `json:"data"`
 }
 
-type GetRandaosResponse struct {
+type GetRandaoResponse struct {
 	Data *RandaoData `json:"data"`
 }
