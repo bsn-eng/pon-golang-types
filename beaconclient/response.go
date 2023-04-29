@@ -29,5 +29,5 @@ type GetBlockResponse struct {
 }
 
 type GetBlockHeaderResponse struct {
-	Data *BeaconBlockHeader `json:"data"`
+	Data *BlockHeaderData `json:"data"`
 }

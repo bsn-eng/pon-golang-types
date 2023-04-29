@@ -80,7 +80,7 @@ type Withdrawal capella.Withdrawal
 type Withdrawals []*Withdrawal
 
 type BlockHeaderData struct {
-	Root string `json:"root"`
+	Root phase0.Root `json:"root"`
 	Canonical bool `json:"canonical"`
 	Header *SignedBeaconBlockHeader `json:"header"`
 }
