@@ -2,6 +2,7 @@ package beaconclient
 
 import (
 	"github.com/attestantio/go-eth2-client/spec/capella"
+	// capellaApi "github.com/attestantio/go-eth2-client/api/v1/capella"
 	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/ethereum/go-ethereum/common"
 )
@@ -77,3 +78,14 @@ type SignedBeaconBlock capella.SignedBeaconBlock
 type Withdrawal capella.Withdrawal
 
 type Withdrawals []*Withdrawal
+
+type BlockHeaderData struct {
+	Root string `json:"root"`
+	Canonical bool `json:"canonical"`
+	Header *SignedBeaconBlockHeader `json:"header"`
+}
+
+type SignedBeaconBlockHeader struct {
+	Message *BeaconBlockHeader `json:"message"`
+	Signature phase0.BLSSignature `json:"signature"`
+}
