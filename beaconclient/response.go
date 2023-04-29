@@ -23,3 +23,11 @@ type GetProposerDutiesResponse struct {
 type GetRandaoResponse struct {
 	Data *RandaoData `json:"data"`
 }
+
+type GetBlockResponse struct {
+	Data *BeaconBlock `json:"data"`
+}
+
+type GetBlockHeaderResponse struct {
+	Data *BeaconBlockHeader `json:"data"`
+}

@@ -62,3 +62,7 @@ type WithdrawalData capella.Withdrawal
 type RandaoData struct {
 	Randao common.Hash `json:"randao"`
 }
+
+type BeaconBlock capella.BeaconBlock
+
+type SignedBeaconBlock capella.SignedBeaconBlock
