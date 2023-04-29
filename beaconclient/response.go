@@ -5,7 +5,7 @@ type GetGenesisResponse struct {
 }
 
 type GetWithdrawalsResponse struct {
-	Data []*WithdrawalData `json:"data"`
+	Data Withdrawals `json:"data"`
 }
 
 type GetSyncStatusResponse struct {

@@ -2,6 +2,7 @@ package beaconclient
 
 import (
 	"github.com/attestantio/go-eth2-client/spec/capella"
+	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/ethereum/go-ethereum/common"
 )
 
@@ -34,10 +35,10 @@ type PayloadAttributesEventData struct {
 }
 
 type PayloadAttributes struct {
-	Timestamp             uint64                `json:"timestamp,string"`
-	PrevRandao            string                `json:"prev_randao"`
-	SuggestedFeeRecipient string                `json:"suggested_fee_recipient"`
-	Withdrawals           []*capella.Withdrawal `json:"withdrawals"`
+	Timestamp             uint64      `json:"timestamp,string"`
+	PrevRandao            string      `json:"prev_randao"`
+	SuggestedFeeRecipient string      `json:"suggested_fee_recipient"`
+	Withdrawals           Withdrawals `json:"withdrawals"`
 }
 
 type GenesisData struct {
@@ -57,12 +58,22 @@ type ProposerDutyData struct {
 	Index     uint64 `json:"validator_index"`
 }
 
-type WithdrawalData capella.Withdrawal
-
 type RandaoData struct {
 	Randao common.Hash `json:"randao"`
 }
 
 type BeaconBlock capella.BeaconBlock
 
+type BeaconBlockHeader struct {
+	Slot          phase0.Slot           `json:"slot,string"`
+	ProposerIndex phase0.ValidatorIndex `json:"proposer_index,string"`
+	ParentRoot    phase0.Root           `json:"parent_root" ssz-size:"32"`
+	StateRoot     phase0.Root           `json:"state_root" ssz-size:"32"`
+	BodyRoot      phase0.Root           `json:"body_root" ssz-size:"32"`
+}
+
 type SignedBeaconBlock capella.SignedBeaconBlock
+
+type Withdrawal capella.Withdrawal
+
+type Withdrawals []*Withdrawal
