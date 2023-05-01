@@ -18,7 +18,7 @@ var (
 
 type MQTTTopic string
 
-type relayMQTTOpts struct {
+type RelayMQTTOpts struct {
 	Broker   string
 	Port     uint64
 	ClientID string
