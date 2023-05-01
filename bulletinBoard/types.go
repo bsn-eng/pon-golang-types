@@ -32,7 +32,7 @@ type RelayMQTT struct {
 	ClientOptions *pahoMQTT.ClientOptions
 	Client        pahoMQTT.Client
 
-	log *logrus.Entry
+	Log *logrus.Entry
 }
 
 type RelayHighestBid struct {
