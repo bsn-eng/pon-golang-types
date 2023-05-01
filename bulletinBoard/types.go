@@ -34,3 +34,9 @@ type RelayMQTT struct {
 
 	log *logrus.Entry
 }
+
+type RelayHighestBid struct {
+	Slot             uint64
+	BuilderPublicKey string
+	Amount           string
+}
