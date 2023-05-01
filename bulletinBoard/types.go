@@ -26,7 +26,7 @@ type RelayMQTTOpts struct {
 	Password string
 }
 
-type relayMQTT struct {
+type RelayMQTT struct {
 	Broker string
 
 	ClientOptions *pahoMQTT.ClientOptions
