@@ -1,17 +1,20 @@
 package database
 
 import (
+	"crypto/sha256"
 	"database/sql"
 	"embed"
+	"fmt"
 	"math/big"
 	"time"
 
+	rpbsTypes "github.com/bsn-eng/pon-golang-types/rpbs"
 	migrate "github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/source/iofs"
 	"github.com/sirupsen/logrus"
 )
 
-var content embed.FS
+var Content embed.FS
 
 type DatabaseDriver string
 
@@ -40,7 +43,7 @@ func (database *DatabaseInterface) NewDatabaseOpts() {
 }
 
 func (database *DatabaseInterface) DBMigrate() error {
-	migrationOpts, err := iofs.New(content, "migrations/")
+	migrationOpts, err := iofs.New(Content, "migrations/")
 	if err != nil {
 		database.Log.Fatal(err)
 		return err
@@ -89,6 +92,19 @@ type BuilderBlockDatabase struct {
 	Slot             uint64
 	BuilderPubkey    string
 	BuilderSignature string
-	RPBS             RPBS
+	RPBS             rpbsTypes.RpbsCommitResponse
 	TransactionByte  string
+	Value            uint64
+}
+
+func (builderSubmission *BuilderBlockDatabase) Hash() string {
+	BuilderBid := fmt.Sprintf("%d,%s,%s,%d",
+		builderSubmission.Slot,
+		builderSubmission.BuilderPubkey,
+		builderSubmission.BuilderSignature,
+		builderSubmission.Value,
+	)
+	BuilderSubmissionHash := sha256.Sum256([]byte(BuilderBid))
+
+	return fmt.Sprintf("%#x", BuilderSubmissionHash)
 }
