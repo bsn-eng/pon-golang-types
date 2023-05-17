@@ -71,7 +71,7 @@ type ValidatorDeliveredPayloadDatabase struct {
 	Slot           uint64
 	ProposerPubkey string
 	BlockHash      string
-	Payload        ExecutionPayload
+	Payload        []byte
 }
 
 type ValidatorReturnedBlockDatabase struct {
