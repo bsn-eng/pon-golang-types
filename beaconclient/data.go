@@ -87,5 +87,5 @@ type BlockHeaderData struct {
 
 type SignedBeaconBlockHeader struct {
 	Message *BeaconBlockHeader `json:"message"`
-	Signature phase0.BLSSignature `json:"signature,string"`
+	Signature string `json:"signature,string"`
 }
