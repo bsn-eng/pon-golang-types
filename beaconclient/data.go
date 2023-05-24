@@ -55,8 +55,8 @@ type SyncStatusData struct {
 
 type ProposerDutyData struct {
 	PubkeyHex string `json:"pubkey"`
-	Slot      uint64 `json:"slot"`
-	Index     uint64 `json:"validator_index"`
+	Slot      uint64 `json:"slot,string"`
+	Index     uint64 `json:"validator_index,string"`
 }
 
 type RandaoData struct {
