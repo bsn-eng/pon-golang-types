@@ -77,7 +77,7 @@ type SignedBeaconBlock capella.SignedBeaconBlock
 
 type Withdrawal capella.Withdrawal
 
-type Withdrawals []*Withdrawal
+type Withdrawals []Withdrawal
 
 type BlockHeaderData struct {
 	Root string `json:"root"`
