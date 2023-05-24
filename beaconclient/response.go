@@ -1,33 +1,33 @@
 package beaconclient
 
 type GetGenesisResponse struct {
-	Data GenesisData `json:"data"`
+	Data *GenesisData `json:"data"`
 }
 
 type GetWithdrawalsResponse struct {
-	Data Withdrawals `json:"data"`
+	Data *Withdrawals `json:"data"`
 }
 
 type GetSyncStatusResponse struct {
-	Data SyncStatusData
+	Data *SyncStatusData
 }
 
 type GetValidatorsResponse struct {
-	Data []ValidatorData `json:"data"`
+	Data []*ValidatorData `json:"data"`
 }
 
 type GetProposerDutiesResponse struct {
-	Data []ProposerDutyData `json:"data"`
+	Data []*ProposerDutyData `json:"data"`
 }
 
 type GetRandaoResponse struct {
-	Data RandaoData `json:"data"`
+	Data *RandaoData `json:"data"`
 }
 
 type GetBlockResponse struct {
-	Data SignedBeaconBlock `json:"data"`
+	Data *SignedBeaconBlock `json:"data"`
 }
 
 type GetBlockHeaderResponse struct {
-	Data BlockHeaderData `json:"data"`
+	Data *BlockHeaderData `json:"data"`
 }
