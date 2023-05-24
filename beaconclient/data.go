@@ -68,9 +68,9 @@ type BeaconBlock capella.BeaconBlock
 type BeaconBlockHeader struct {
 	Slot          phase0.Slot           `json:"slot,string"`
 	ProposerIndex phase0.ValidatorIndex `json:"proposer_index,string"`
-	ParentRoot    phase0.Root           `json:"parent_root,string" ssz-size:"32"`
-	StateRoot     phase0.Root           `json:"state_root,string" ssz-size:"32"`
-	BodyRoot      phase0.Root           `json:"body_root,string" ssz-size:"32"`
+	ParentRoot    string        `json:"parent_root,string" ssz-size:"32"`
+	StateRoot     string           `json:"state_root,string" ssz-size:"32"`
+	BodyRoot      string           `json:"body_root,string" ssz-size:"32"`
 }
 
 type SignedBeaconBlock capella.SignedBeaconBlock
@@ -80,7 +80,7 @@ type Withdrawal capella.Withdrawal
 type Withdrawals []*Withdrawal
 
 type BlockHeaderData struct {
-	Root phase0.Root `json:"root,string"`
+	Root string `json:"root,string"`
 	Canonical bool `json:"canonical"`
 	Header *SignedBeaconBlockHeader `json:"header"`
 }
