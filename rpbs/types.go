@@ -1,4 +1,4 @@
-package RPBS
+package rpbs
 
 type EncodedRPBSSignature struct {
 	Z1Hat string `json:"z1_hat"`
