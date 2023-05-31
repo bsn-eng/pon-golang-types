@@ -1,9 +1,12 @@
 package relay
 
 import (
+	"encoding/json"
+
 	"github.com/attestantio/go-eth2-client/spec/capella"
 	"github.com/attestantio/go-eth2-client/spec/phase0"
 	rpbsTypes "github.com/bsn-eng/pon-golang-types/rpbs"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 type Address [20]byte
@@ -13,6 +16,23 @@ type EcdsaSignature [65]byte
 type Hash [32]byte
 type PublicKey [48]byte
 type Transaction []byte
+
+func (h Hash) String() string {
+	return hexutil.Bytes(h[:]).String()
+}
+
+func (e EcdsaAddress) String() string {
+	return hexutil.Bytes(e[:]).String()
+}
+
+func (e EcdsaSignature) String() string {
+	return hexutil.Bytes(e[:]).String()
+}
+
+func (t Transaction) String() string {
+	transaction, _ := json.Marshal(t)
+	return string(transaction)
+}
 
 type CapellaBuilderSubmitBlockRequest struct {
 	Signature      Signature      `json:"signature" ssz-size:"96"`
