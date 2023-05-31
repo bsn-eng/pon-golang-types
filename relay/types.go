@@ -3,7 +3,6 @@ package relay
 import (
 	"github.com/attestantio/go-eth2-client/spec/capella"
 	"github.com/attestantio/go-eth2-client/spec/phase0"
-	"github.com/bsn-eng/pon-golang-types/RPBS"
 )
 
 type Address [20]byte
@@ -35,6 +34,15 @@ type BidTrace struct {
 	Endpoint               string                          `json:"endpoint"`
 	BuilderWalletAddress   Address                         `json:"builder_wallet_address"`
 	PayoutPoolTransaction  []byte                          `json:"payout_pool_transaction"`
-	RPBS                   *RPBS.EncodedRPBSSignature      `json:"rpbs"`
+	RPBS                   *EncodedRPBSSignature           `json:"rpbs"`
 	RPBSPubkey             string                          `json:"rpbs_pubkey"`
+}
+
+type EncodedRPBSSignature struct {
+	Z1Hat string `json:"z1_hat"`
+	C1Hat string `json:"c1_hat"`
+	S1Hat string `json:"s1_hat"`
+	C2Hat string `json:"c2_hat"`
+	S2Hat string `json:"s2_hat"`
+	M1Hat string `json:"m1_hat"`
 }
