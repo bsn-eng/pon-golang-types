@@ -33,6 +33,10 @@ func (e EcdsaSignature) String() string {
 	return hexutil.Bytes(e[:]).String()
 }
 
+func (e Address) String() string {
+	return hexutil.Bytes(e[:]).String()
+}
+
 func (t Transaction) String() string {
 	transaction, _ := json.Marshal(t)
 	return string(transaction)
@@ -58,7 +62,7 @@ type BidTrace struct {
 	ExecutionPayloadHeader *capella.ExecutionPayloadHeader `json:"execution_payload_header"`
 	Endpoint               string                          `json:"endpoint"`
 	BuilderWalletAddress   Address                         `json:"builder_wallet_address"`
-	PayoutPoolTransaction  []byte                          `json:"payout_pool_transaction"`
+	PayoutPoolTransaction  Transaction                     `json:"payout_pool_transaction"`
 	RPBS                   *rpbsTypes.EncodedRPBSSignature `json:"rpbs"`
 	RPBSPubkey             string                          `json:"rpbs_pubkey"`
 }
