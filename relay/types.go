@@ -21,6 +21,10 @@ func (h Hash) String() string {
 	return hexutil.Bytes(h[:]).String()
 }
 
+func (h BLSPubKey) String() string {
+	return hexutil.Bytes(h[:]).String()
+}
+
 func (e EcdsaAddress) String() string {
 	return hexutil.Bytes(e[:]).String()
 }
