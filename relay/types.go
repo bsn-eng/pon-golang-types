@@ -34,7 +34,7 @@ func (t Transaction) String() string {
 	return string(transaction)
 }
 
-type CapellaBuilderSubmitBlockRequest struct {
+type BuilderSubmitBlockRequest struct {
 	Signature      Signature      `json:"signature" ssz-size:"96"`
 	Message        *BidTrace      `json:"message"`
 	EcdsaSignature EcdsaSignature `json:"ecdsa_signature"`
