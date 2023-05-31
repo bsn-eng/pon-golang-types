@@ -14,7 +14,7 @@ type Signature phase0.BLSSignature
 type EcdsaAddress [20]byte
 type EcdsaSignature [65]byte
 type Hash [32]byte
-type PublicKey [48]byte
+type BLSPubKey [48]byte
 type Transaction []byte
 
 func (h Hash) String() string {
@@ -44,8 +44,8 @@ type BidTrace struct {
 	Slot                 uint64    `json:"slot,string"`
 	ParentHash           Hash      `json:"parent_hash" ssz-size:"32"`
 	BlockHash            Hash      `json:"block_hash" ssz-size:"32"`
-	BuilderPubkey        PublicKey `json:"builder_pubkey" ssz-size:"48"`
-	ProposerPubkey       PublicKey `json:"proposer_pubkey" ssz-size:"48"`
+	BuilderPubkey        BLSPubKey `json:"builder_pubkey" ssz-size:"48"`
+	ProposerPubkey       BLSPubKey `json:"proposer_pubkey" ssz-size:"48"`
 	ProposerFeeRecipient Address   `json:"proposer_fee_recipient" ssz-size:"20"`
 	GasLimit             uint64    `json:"gas_limit,string"`
 	GasUsed              uint64    `json:"gas_used,string"`
