@@ -8,7 +8,7 @@ import (
 	"math/big"
 	"time"
 
-	relayTypes "github.com/bsn-eng/pon-golang-types/relay"
+	rpbsTypes "github.com/bsn-eng/pon-golang-types/rpbs"
 	migrate "github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/source/iofs"
 	"github.com/sirupsen/logrus"
@@ -92,7 +92,7 @@ type BuilderBlockDatabase struct {
 	Slot             uint64
 	BuilderPubkey    string
 	BuilderSignature string
-	RPBS             relayTypes.EncodedRPBSSignature
+	RPBS             rpbsTypes.EncodedRPBSSignature
 	TransactionByte  string
 	Value            uint64
 }
