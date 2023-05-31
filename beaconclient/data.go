@@ -32,14 +32,14 @@ type PayloadAttributesEventData struct {
 	ParentBlockNumber uint64            `json:"parent_block_number,string"`
 	ParentBlockRoot   string            `json:"parent_block_root"`
 	ParentBlockHash   string            `json:"parent_block_hash"`
-	PayloadAttributes PayloadAttributes `json:"payload_attributes"`
+	PayloadAttributes *PayloadAttributes `json:"payload_attributes"`
 }
 
 type PayloadAttributes struct {
 	Timestamp             uint64      `json:"timestamp,string"`
 	PrevRandao            string      `json:"prev_randao"`
 	SuggestedFeeRecipient string      `json:"suggested_fee_recipient"`
-	Withdrawals           Withdrawals `json:"withdrawals"`
+	Withdrawals           *Withdrawals `json:"withdrawals"`
 }
 
 type GenesisData struct {
@@ -55,12 +55,12 @@ type SyncStatusData struct {
 
 type ProposerDutyData struct {
 	PubkeyHex string `json:"pubkey"`
-	Slot      uint64 `json:"slot"`
-	Index     uint64 `json:"validator_index"`
+	Slot      uint64 `json:"slot,string"`
+	Index     uint64 `json:"validator_index,string"`
 }
 
 type RandaoData struct {
-	Randao common.Hash `json:"randao"`
+	Randao common.Hash `json:"randao,string"`
 }
 
 type BeaconBlock capella.BeaconBlock
@@ -68,24 +68,29 @@ type BeaconBlock capella.BeaconBlock
 type BeaconBlockHeader struct {
 	Slot          phase0.Slot           `json:"slot,string"`
 	ProposerIndex phase0.ValidatorIndex `json:"proposer_index,string"`
-	ParentRoot    phase0.Root           `json:"parent_root" ssz-size:"32"`
-	StateRoot     phase0.Root           `json:"state_root" ssz-size:"32"`
-	BodyRoot      phase0.Root           `json:"body_root" ssz-size:"32"`
+	ParentRoot    string        `json:"parent_root" ssz-size:"32"`
+	StateRoot     string           `json:"state_root" ssz-size:"32"`
+	BodyRoot      string           `json:"body_root" ssz-size:"32"`
 }
 
 type SignedBeaconBlock capella.SignedBeaconBlock
 
-type Withdrawal capella.Withdrawal
+type Withdrawal struct {
+	Index          uint64 `json:"index,string"` //
+	ValidatorIndex phase0.ValidatorIndex `json:"validator_index,string"`
+	Address        string `json:"address" ssz-size:"20"`
+	Amount         uint64 `json:"amount,string"`
+}
 
 type Withdrawals []*Withdrawal
 
 type BlockHeaderData struct {
-	Root phase0.Root `json:"root"`
+	Root string `json:"root"`
 	Canonical bool `json:"canonical"`
 	Header *SignedBeaconBlockHeader `json:"header"`
 }
 
 type SignedBeaconBlockHeader struct {
 	Message *BeaconBlockHeader `json:"message"`
-	Signature phase0.BLSSignature `json:"signature"`
+	Signature string `json:"signature"`
 }
