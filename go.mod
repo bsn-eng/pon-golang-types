@@ -6,6 +6,7 @@ require (
 	github.com/attestantio/go-eth2-client v0.15.8
 	github.com/eclipse/paho.mqtt.golang v1.4.2
 	github.com/ethereum/go-ethereum v1.11.6
+	github.com/ferranbt/fastssz v0.1.2
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/sirupsen/logrus v1.8.1
 )
@@ -14,7 +15,6 @@ require (
 	github.com/btcsuite/btcd/btcec/v2 v2.2.0 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
 	github.com/fatih/color v1.13.0 // indirect
-	github.com/ferranbt/fastssz v0.1.2 // indirect
 	github.com/goccy/go-yaml v1.9.2 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
