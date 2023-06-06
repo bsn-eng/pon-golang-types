@@ -1,5 +1,12 @@
 package rpbs
 
+type RPBSCommitMessage struct {
+	BuilderWalletAddress string `json:"builderWalletAddress"`
+	Slot                 uint64 `json:"slot"`
+	Amount               uint64 `json:"amount"`
+	PayoutTxBytes        string `json:"payoutTxBytes"`
+	TxBytes              string `json:"txBytes"`
+}
 
 type EncodedRPBSSignature struct {
 	Z1Hat string `json:"z1_hat"`
