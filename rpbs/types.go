@@ -5,7 +5,7 @@ type RPBSCommitMessage struct {
 	Slot                 uint64 `json:"slot"`
 	Amount               uint64 `json:"amount"`
 	PayoutTxBytes        string `json:"payoutTxBytes"`
-	TxBytes              string `json:"txBytes"`
+	TxBytes              []string `json:"txBytes"`
 }
 
 type EncodedRPBSSignature struct {
