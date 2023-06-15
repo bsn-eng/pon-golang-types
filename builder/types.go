@@ -48,6 +48,6 @@ type BidPayload struct {
 	Endpoint               string                          `json:"endpoint"`
 	BuilderWalletAddress   commonTypes.Address             `json:"builder_wallet_address"`
 	PayoutPoolTransaction  []byte                          `json:"payout_pool_transaction"`
-	RPBS                   *rpbsTypes.EncodedRPBSSignature `json:"rpbs",omitempty`
-	RPBSPubkey             string                          `json:"rpbs_pubkey",omitempty`
+	RPBS                   *rpbsTypes.EncodedRPBSSignature `json:"rpbs"`
+	RPBSPubkey             string                          `json:"rpbs_pubkey"`
 }
