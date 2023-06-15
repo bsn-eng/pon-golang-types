@@ -42,7 +42,7 @@ type BidPayload struct {
 	ProposerFeeRecipient commonTypes.Address   `json:"proposer_fee_recipient" ssz-size:"20"`
 	GasLimit             uint64                `json:"gas_limit,string"`
 	GasUsed              uint64                `json:"gas_used,string"`
-	Value                uint64                `json:"value,strings"`
+	Value                uint64                `json:"value,string"`
 
 	ExecutionPayloadHeader *capella.ExecutionPayloadHeader `json:"execution_payload_header"`
 	Endpoint               string                          `json:"endpoint"`
