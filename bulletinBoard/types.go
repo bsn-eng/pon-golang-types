@@ -2,9 +2,6 @@ package bulletinboard
 
 import (
 	"time"
-
-	pahoMQTT "github.com/eclipse/paho.mqtt.golang"
-	"github.com/sirupsen/logrus"
 )
 
 var (
@@ -24,15 +21,6 @@ type RelayMQTTOpts struct {
 	ClientID string
 	UserName string
 	Password string
-}
-
-type RelayMQTT struct {
-	Broker string
-
-	ClientOptions *pahoMQTT.ClientOptions
-	Client        pahoMQTT.Client
-
-	Log *logrus.Entry
 }
 
 type RelayHighestBid struct {
