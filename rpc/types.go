@@ -11,6 +11,12 @@ type JSONrpcPrivateTx struct {
 
 type JSONrpcPrivateTxs []JSONrpcPrivateTx
 
+type JSONrpcPrivateTxHash struct {
+	TxHash string `json:"txHash"`
+}
+
+type JSONrpcPrivateTxHashes []JSONrpcPrivateTxHash
+
 type JSONrpcBundle struct {
 	Txs []string `json:"txs"`  // Hex-encoded transaction bytes
 	BlockNumber uint64 `json:"blockNumber,string"`
