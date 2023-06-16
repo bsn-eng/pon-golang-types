@@ -10,7 +10,7 @@ var (
 )
 
 var (
-	RelayPublishLimit = time.Duration(100)
+	RelayPublishLimit, _ = time.ParseDuration("15s")
 )
 
 type MQTTTopic string
