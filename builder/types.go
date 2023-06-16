@@ -2,6 +2,7 @@ package builder
 
 import (
 	capella "github.com/attestantio/go-eth2-client/spec/capella"
+	bundleTypes "github.com/bsn-eng/pon-golang-types/bundles"
 	commonTypes "github.com/bsn-eng/pon-golang-types/common"
 	rpbsTypes "github.com/bsn-eng/pon-golang-types/rpbs"
 	gethCommon "github.com/ethereum/go-ethereum/common"
@@ -10,18 +11,18 @@ import (
 )
 
 type BuilderPayloadAttributes struct {
-	Timestamp             hexutil.Uint64     `json:"timestamp"`
-	Random                gethCommon.Hash    `json:"prevRandao"`
-	SuggestedFeeRecipient gethCommon.Address `json:"suggestedFeeRecipient"`
-	Slot                  uint64             `json:"slot,string"`
-	HeadHash              gethCommon.Hash    `json:"headHash"`
-	BidAmount             uint64             `json:"bidAmount,string"`
-	GasLimit              uint64             `json:"gasLimit,string"`
-	Transactions          [][]byte           `json:"transactions"`
-	Withdrawals           types.Withdrawals  `json:"withdrawals"`
-	NoMempoolTxs          bool               `json:"noMempoolTxs,string"`
-	PayoutPoolAddress     gethCommon.Address `json:"payoutPoolAddress"`
-	BundleIDs             []string           `json:"bundleIDs"`
+	Timestamp             hexutil.Uint64              `json:"timestamp"`
+	Random                gethCommon.Hash             `json:"prevRandao"`
+	SuggestedFeeRecipient gethCommon.Address          `json:"suggestedFeeRecipient"`
+	Slot                  uint64                      `json:"slot,string"`
+	HeadHash              gethCommon.Hash             `json:"headHash"`
+	BidAmount             uint64                      `json:"bidAmount,string"`
+	GasLimit              uint64                      `json:"gasLimit,string"`
+	Transactions          [][]byte                    `json:"transactions"`
+	Withdrawals           types.Withdrawals           `json:"withdrawals"`
+	NoMempoolTxs          bool                        `json:"noMempoolTxs,string"`
+	PayoutPoolAddress     gethCommon.Address          `json:"payoutPoolAddress"`
+	Bundles               []bundleTypes.BuilderBundle `json:"bundles"`
 }
 
 type PrivateTransactionsPayload struct {
