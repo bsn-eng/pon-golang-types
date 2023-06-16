@@ -11,21 +11,21 @@ import (
 )
 
 type BuilderBundleEntry struct {
-	ID         string    `db:"id"`
-	InsertedAt time.Time `db:"inserted_at"`
+	ID         string    `db:"id" json:"id"`
+	InsertedAt time.Time `db:"inserted_at" json:"inserted_at"`
 
 	BundleHash        string `db:"bundle_hash"`
 	Txs               string `db:"txs"`
-	BlockNumber       uint64 `db:"block_number"`
-	MinTimestamp      uint64 `db:"min_timestamp"`
-	MaxTimestamp      uint64 `db:"max_timestamp"`
+	BlockNumber       uint64 `db:"block_number" json:"block_number,string"`
+	MinTimestamp      uint64 `db:"min_timestamp" json:"min_timestamp,string,omitempty"`
+	MaxTimestamp      uint64 `db:"max_timestamp" json:"max_timestamp,string,omitempty"`
 	RevertingTxHashes string `db:"reverting_tx_hashes"`
 
 	BuilderPubkey    string `db:"builder_pubkey"`
 	BuilderSignature string `db:"builder_signature"`
 
-	BundleTransactionCount uint64 `db:"bundle_transaction_count"`
-	BundleTotalGas         uint64 `db:"bundle_total_gas"`
+	BundleTransactionCount uint64 `db:"bundle_transaction_count" json:"bundle_transaction_count,string"`
+	BundleTotalGas         uint64 `db:"bundle_total_gas" json:"bundle_total_gas,string"`
 
 	Added        bool   `db:"added"`
 	Error        bool   `db:"error"`

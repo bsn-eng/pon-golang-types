@@ -18,10 +18,11 @@ type JSONrpcPrivateTxHash struct {
 type JSONrpcPrivateTxHashes []JSONrpcPrivateTxHash
 
 type JSONrpcBundle struct {
+	ID string `json:"id,omitempty"`  // ID is the bundle ID
 	Txs []string `json:"txs"`  // Hex-encoded transaction bytes
 	BlockNumber uint64 `json:"blockNumber,string"`
-	MinTimestamp uint64 `json:"minTimestamp,string"`
-	MaxTimestamp uint64 `json:"maxTimestamp,string"`
+	MinTimestamp uint64 `json:"minTimestamp,string,omitempty"`
+	MaxTimestamp uint64 `json:"maxTimestamp,string,omitempty"`
 	RevertingTxHashes []string `json:"revertingTxHashes"`
 }
 
