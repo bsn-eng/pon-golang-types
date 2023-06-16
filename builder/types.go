@@ -21,7 +21,7 @@ type BuilderPayloadAttributes struct {
 	Withdrawals           types.Withdrawals  `json:"withdrawals"`
 	NoMempoolTxs          bool               `json:"noMempoolTxs,string"`
 	PayoutPoolAddress     gethCommon.Address `json:"payoutPoolAddress"`
-	BundleIDs               []string           `json:"bundleIDs"`
+	BundleIDs             []string           `json:"bundleIDs"`
 }
 
 type PrivateTransactionsPayload struct {
