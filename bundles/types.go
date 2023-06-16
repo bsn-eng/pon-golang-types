@@ -21,9 +21,6 @@ type BuilderBundleEntry struct {
 	MaxTimestamp      uint64 `db:"max_timestamp"`
 	RevertingTxHashes string `db:"reverting_tx_hashes"`
 
-	BundleCreatorPubkey    string `db:"bundle_creator_pubkey"`
-	BundleCreatorSignature string `db:"bundle_creator_signature"`
-
 	BuilderPubkey    string `db:"builder_pubkey"`
 	BuilderSignature string `db:"builder_signature"`
 
@@ -46,9 +43,6 @@ type BuilderBundle struct {
 	MaxTimestamp uint64
 
 	RevertingTxHashes []*common.Hash
-
-	BundleCreatorPubkey    string
-	BundleCreatorSignature string
 
 	BuilderPubkey    string
 	BuilderSignature string
@@ -87,8 +81,6 @@ func BuilderBundleToEntry(b *BuilderBundle) (*BuilderBundleEntry, error) {
 		MinTimestamp:           b.MinTimestamp,
 		MaxTimestamp:           b.MaxTimestamp,
 		RevertingTxHashes:      strings.Join(revertingTxHashes, ","),
-		BundleCreatorPubkey:    b.BundleCreatorPubkey,
-		BundleCreatorSignature: b.BundleCreatorSignature,
 		BuilderPubkey:          b.BuilderPubkey,
 		BuilderSignature:       b.BuilderSignature,
 		BundleTransactionCount: b.BundleTransactionCount,
@@ -128,8 +120,6 @@ func BuilderBundleEntryToBundle(b *BuilderBundleEntry) (*BuilderBundle, error) {
 		MinTimestamp:           b.MinTimestamp,
 		MaxTimestamp:           b.MaxTimestamp,
 		RevertingTxHashes:      revertingTxHashes,
-		BundleCreatorPubkey:    b.BundleCreatorPubkey,
-		BundleCreatorSignature: b.BundleCreatorSignature,
 		BuilderPubkey:          b.BuilderPubkey,
 		BuilderSignature:       b.BuilderSignature,
 		BundleTransactionCount: b.BundleTransactionCount,

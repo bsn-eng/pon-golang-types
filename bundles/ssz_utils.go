@@ -36,16 +36,10 @@ func (b *BuilderBundle) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 		hh.PutBytes(b.RevertingTxHashes[i][:])
 	}
 
-	// Field (5) 'BundleCreatorPubkey'
-	hh.PutBytes([]byte(b.BundleCreatorPubkey))
-
-	// Field (6) 'BundleCreatorSignature'
-	hh.PutBytes([]byte(b.BundleCreatorSignature))
-
-	// Field (7) 'BundleTransactionCount'
+	// Field (5) 'BundleTransactionCount'
 	hh.PutUint64(b.BundleTransactionCount)
 
-	// Field (8) 'BundleTotalGas'
+	// Field (6) 'BundleTotalGas'
 	hh.PutUint64(b.BundleTotalGas)
 
 	hh.Merkleize(indx)

@@ -23,8 +23,6 @@ type JSONrpcBundle struct {
 	MinTimestamp uint64 `json:"minTimestamp,string"`
 	MaxTimestamp uint64 `json:"maxTimestamp,string"`
 	RevertingTxHashes []string `json:"revertingTxHashes"`
-	BundleCreatorPubkey string `json:"bundleCreatorPubkey"`
-	BundleCreatorSignature string `json:"bundleCreatorSignature"`
 }
 
 type JSONrpcBundleHash struct {
