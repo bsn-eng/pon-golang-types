@@ -1,13 +1,13 @@
 package bundles
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/log"
 )
 
 type BuilderBundleEntry struct {
@@ -69,8 +69,7 @@ func BuilderBundleToEntry(b *BuilderBundle) (*BuilderBundleEntry, error) {
 	for _, tx := range b.Txs {
 		txBytes, err := tx.MarshalBinary()
 		if err != nil {
-			log.Error("error marshalling tx", "err", err)
-			return nil, err
+			return nil, fmt.Errorf("error marshalling tx: %v", err)
 		}
 		txList = append(txList, hexutil.Encode(txBytes))
 	}
@@ -106,14 +105,12 @@ func BuilderBundleEntryToBundle(b *BuilderBundleEntry) (*BuilderBundle, error) {
 	for _, txBytesEncoded := range strings.Split(b.Txs, ",") {
 		txBytes, err := hexutil.Decode(txBytesEncoded)
 		if err != nil {
-			log.Error("error decoding tx bytes", "err", err)
-			return nil, err
+			return nil, fmt.Errorf("error decoding tx bytes: %v", err)
 		}
 		var tx types.Transaction
 		err = tx.UnmarshalBinary(txBytes)
 		if err != nil {
-			log.Error("error unmarshalling tx", "err", err)
-			return nil, err
+			return nil, fmt.Errorf("error unmarshalling tx: %v", err)
 		}
 	}
 
