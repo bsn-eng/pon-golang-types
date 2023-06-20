@@ -36,7 +36,7 @@ type PayloadAttributesEventData struct {
 }
 
 type PayloadAttributes struct {
-	Timestamp             string      `json:"timestamp"`
+	Timestamp             uint64      `json:"timestamp,string"`
 	PrevRandao            string      `json:"prev_randao"`
 	SuggestedFeeRecipient string      `json:"suggested_fee_recipient"`
 	Withdrawals           *Withdrawals `json:"withdrawals"`
@@ -78,7 +78,7 @@ type SignedBeaconBlock capella.SignedBeaconBlock
 type Withdrawal struct {
 	Index          string `json:"index"`
 	ValidatorIndex string `json:"validator_index"`
-	Address        string `json:"address" ssz-size:"20"`
+	Address        string `json:"address"`
 	Amount         string `json:"amount"`
 }
 
