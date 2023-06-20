@@ -76,10 +76,10 @@ type BeaconBlockHeader struct {
 type SignedBeaconBlock capella.SignedBeaconBlock
 
 type Withdrawal struct {
-	Index          string `json:"index"`
-	ValidatorIndex string `json:"validator_index"`
+	Index          uint64 `json:"index,string"`
+	ValidatorIndex uint64 `json:"validator_index,string"`
 	Address        string `json:"address"`
-	Amount         string `json:"amount"`
+	Amount         uint64 `json:"amount,string"`
 }
 
 type Withdrawals []*Withdrawal
