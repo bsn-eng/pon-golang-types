@@ -27,16 +27,16 @@ type HeadEventData struct {
 }
 
 type PayloadAttributesEventData struct {
-	ProposerIndex     uint64            `json:"proposer_index,string"`
-	ProposalSlot      uint64            `json:"proposal_slot,string"`
-	ParentBlockNumber uint64            `json:"parent_block_number,string"`
+	ProposerIndex     string            `json:"proposer_index"`
+	ProposalSlot      string            `json:"proposal_slot"`
+	ParentBlockNumber string            `json:"parent_block_number"`
 	ParentBlockRoot   string            `json:"parent_block_root"`
 	ParentBlockHash   string            `json:"parent_block_hash"`
 	PayloadAttributes *PayloadAttributes `json:"payload_attributes"`
 }
 
 type PayloadAttributes struct {
-	Timestamp             uint64      `json:"timestamp,string"`
+	Timestamp             string      `json:"timestamp"`
 	PrevRandao            string      `json:"prev_randao"`
 	SuggestedFeeRecipient string      `json:"suggested_fee_recipient"`
 	Withdrawals           *Withdrawals `json:"withdrawals"`
@@ -76,10 +76,10 @@ type BeaconBlockHeader struct {
 type SignedBeaconBlock capella.SignedBeaconBlock
 
 type Withdrawal struct {
-	Index          uint64 `json:"index,string"` //
-	ValidatorIndex uint64 `json:"validator_index,string"`
+	Index          string `json:"index"`
+	ValidatorIndex string `json:"validator_index"`
 	Address        string `json:"address" ssz-size:"20"`
-	Amount         uint64 `json:"amount,string"`
+	Amount         string `json:"amount"`
 }
 
 type Withdrawals []*Withdrawal
