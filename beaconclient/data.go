@@ -27,9 +27,9 @@ type HeadEventData struct {
 }
 
 type PayloadAttributesEventData struct {
-	ProposerIndex     string            `json:"proposer_index"`
-	ProposalSlot      string            `json:"proposal_slot"`
-	ParentBlockNumber string            `json:"parent_block_number"`
+	ProposerIndex     uint64            `json:"proposer_index,string"`
+	ProposalSlot      uint64            `json:"proposal_slot,string"`
+	ParentBlockNumber uint64            `json:"parent_block_number,string"`
 	ParentBlockRoot   string            `json:"parent_block_root"`
 	ParentBlockHash   string            `json:"parent_block_hash"`
 	PayloadAttributes *PayloadAttributes `json:"payload_attributes"`
