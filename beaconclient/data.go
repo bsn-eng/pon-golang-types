@@ -77,7 +77,7 @@ type SignedBeaconBlock capella.SignedBeaconBlock
 
 type Withdrawal struct {
 	Index          uint64 `json:"index,string"` //
-	ValidatorIndex phase0.ValidatorIndex `json:"validator_index,string"`
+	ValidatorIndex uint64 `json:"validator_index,string"`
 	Address        string `json:"address" ssz-size:"20"`
 	Amount         uint64 `json:"amount,string"`
 }
