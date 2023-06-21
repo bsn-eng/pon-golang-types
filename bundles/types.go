@@ -30,6 +30,8 @@ type BuilderBundleEntry struct {
 	Added        bool   `db:"added"`
 	Error        bool   `db:"error"`
 	ErrorMessage string `db:"error_message"`
+
+	FailedRetryCount uint64 `db:"failed_retry_count" json:"failed_retry_count,string"`
 }
 
 type BuilderBundle struct {
@@ -53,6 +55,8 @@ type BuilderBundle struct {
 	Added        bool
 	Error        bool
 	ErrorMessage string
+
+	FailedRetryCount uint64
 
 	Adding bool
 }
@@ -88,6 +92,7 @@ func BuilderBundleToEntry(b *BuilderBundle) (*BuilderBundleEntry, error) {
 		Added:                  b.Added,
 		Error:                  b.Error,
 		ErrorMessage:           b.ErrorMessage,
+		FailedRetryCount:       b.FailedRetryCount,
 	}, nil
 }
 
@@ -127,6 +132,7 @@ func BuilderBundleEntryToBundle(b *BuilderBundleEntry) (*BuilderBundle, error) {
 		Added:                  b.Added,
 		Error:                  b.Error,
 		ErrorMessage:           b.ErrorMessage,
+		FailedRetryCount:       b.FailedRetryCount,
 
 		Adding: false,
 	}, nil
