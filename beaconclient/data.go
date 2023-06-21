@@ -3,7 +3,6 @@ package beaconclient
 import (
 	"github.com/attestantio/go-eth2-client/spec/capella"
 	// capellaApi "github.com/attestantio/go-eth2-client/api/v1/capella"
-	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/ethereum/go-ethereum/common"
 )
 
@@ -27,18 +26,18 @@ type HeadEventData struct {
 }
 
 type PayloadAttributesEventData struct {
-	ProposerIndex     uint64            `json:"proposer_index,string"`
-	ProposalSlot      uint64            `json:"proposal_slot,string"`
-	ParentBlockNumber uint64            `json:"parent_block_number,string"`
-	ParentBlockRoot   string            `json:"parent_block_root"`
-	ParentBlockHash   string            `json:"parent_block_hash"`
+	ProposerIndex     uint64             `json:"proposer_index,string"`
+	ProposalSlot      uint64             `json:"proposal_slot,string"`
+	ParentBlockNumber uint64             `json:"parent_block_number,string"`
+	ParentBlockRoot   string             `json:"parent_block_root"`
+	ParentBlockHash   string             `json:"parent_block_hash"`
 	PayloadAttributes *PayloadAttributes `json:"payload_attributes"`
 }
 
 type PayloadAttributes struct {
-	Timestamp             uint64      `json:"timestamp,string"`
-	PrevRandao            string      `json:"prev_randao"`
-	SuggestedFeeRecipient string      `json:"suggested_fee_recipient"`
+	Timestamp             uint64       `json:"timestamp,string"`
+	PrevRandao            string       `json:"prev_randao"`
+	SuggestedFeeRecipient string       `json:"suggested_fee_recipient"`
 	Withdrawals           *Withdrawals `json:"withdrawals"`
 }
 
@@ -66,11 +65,11 @@ type RandaoData struct {
 type BeaconBlock capella.BeaconBlock
 
 type BeaconBlockHeader struct {
-	Slot          phase0.Slot           `json:"slot,string"`
-	ProposerIndex phase0.ValidatorIndex `json:"proposer_index,string"`
-	ParentRoot    string        `json:"parent_root" ssz-size:"32"`
-	StateRoot     string           `json:"state_root" ssz-size:"32"`
-	BodyRoot      string           `json:"body_root" ssz-size:"32"`
+	Slot          uint64 `json:"slot,string"`
+	ProposerIndex uint64 `json:"proposer_index,string"`
+	ParentRoot    string `json:"parent_root" ssz-size:"32"`
+	StateRoot     string `json:"state_root" ssz-size:"32"`
+	BodyRoot      string `json:"body_root" ssz-size:"32"`
 }
 
 type SignedBeaconBlock capella.SignedBeaconBlock
@@ -85,12 +84,12 @@ type Withdrawal struct {
 type Withdrawals []*Withdrawal
 
 type BlockHeaderData struct {
-	Root string `json:"root"`
-	Canonical bool `json:"canonical"`
-	Header *SignedBeaconBlockHeader `json:"header"`
+	Root      string                   `json:"root"`
+	Canonical bool                     `json:"canonical"`
+	Header    *SignedBeaconBlockHeader `json:"header"`
 }
 
 type SignedBeaconBlockHeader struct {
-	Message *BeaconBlockHeader `json:"message"`
-	Signature string `json:"signature"`
+	Message   *BeaconBlockHeader `json:"message"`
+	Signature string             `json:"signature"`
 }
