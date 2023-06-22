@@ -59,7 +59,7 @@ type BuilderBundle struct {
 	FailedRetryCount uint64
 
 	Adding bool
-	Inclued bool
+	Included bool
 }
 
 func BuilderBundleToEntry(b *BuilderBundle) (*BuilderBundleEntry, error) {
