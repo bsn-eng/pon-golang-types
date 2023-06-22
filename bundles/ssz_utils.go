@@ -42,6 +42,9 @@ func (b *BuilderBundle) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 	// Field (6) 'BundleTotalGas'
 	hh.PutUint64(b.BundleTotalGas)
 
+	// Field (7) 'BundleDateTime'
+	hh.PutUint64(uint64(b.BundleDateTime.Unix()))
+
 	hh.Merkleize(indx)
 	return
 }
