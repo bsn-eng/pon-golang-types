@@ -136,6 +136,6 @@ func BuilderBundleEntryToBundle(b *BuilderBundleEntry) (*BuilderBundle, error) {
 		FailedRetryCount:       b.FailedRetryCount,
 
 		Adding: false,
-		Inclued: false,
+		Included: false,
 	}, nil
 }
