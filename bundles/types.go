@@ -52,13 +52,15 @@ type BuilderBundle struct {
 	BundleTransactionCount uint64
 	BundleTotalGas         uint64
 
+	BundleDateTime time.Time
+
 	Added        bool
 	Error        bool
 	ErrorMessage string
 
 	FailedRetryCount uint64
 
-	Adding bool
+	Adding   bool
 	Included bool
 }
 
@@ -94,6 +96,7 @@ func BuilderBundleToEntry(b *BuilderBundle) (*BuilderBundleEntry, error) {
 		Error:                  b.Error,
 		ErrorMessage:           b.ErrorMessage,
 		FailedRetryCount:       b.FailedRetryCount,
+		InsertedAt:             b.BundleDateTime,
 	}, nil
 }
 
@@ -134,8 +137,8 @@ func BuilderBundleEntryToBundle(b *BuilderBundleEntry) (*BuilderBundle, error) {
 		Error:                  b.Error,
 		ErrorMessage:           b.ErrorMessage,
 		FailedRetryCount:       b.FailedRetryCount,
-
-		Adding: false,
-		Included: false,
+		BundleDateTime:         b.InsertedAt,
+		Adding:                 false,
+		Included:               false,
 	}, nil
 }
