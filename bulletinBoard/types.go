@@ -28,3 +28,8 @@ type RelayHighestBid struct {
 	BuilderPublicKey string
 	Amount           string
 }
+type ProposerHeaderRequest struct {
+	Slot      uint64
+	Proposer  string
+	Timestamp uint64
+}
