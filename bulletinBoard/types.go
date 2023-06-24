@@ -33,3 +33,8 @@ type ProposerHeaderRequest struct {
 	Proposer  string
 	Timestamp uint64
 }
+type SlotPayloadRequest struct {
+	Slot        uint64
+	Proposer    string
+	Transaction string
+}
