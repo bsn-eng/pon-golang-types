@@ -35,6 +35,13 @@ type BuilderBlockBid struct {
 	EcdsaSignature commonTypes.EcdsaSignature `json:"ecdsa_signature"`
 }
 
+type BlockBidResponse struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+	RelayResponse interface{} `json:"relay_response"`
+	BlockBid BuilderBlockBid `json:"block_bid"`
+}
+
 type BidPayload struct {
 	Slot                 uint64                `json:"slot,string"`
 	ParentHash           commonTypes.Hash      `json:"parent_hash" ssz-size:"32"`
