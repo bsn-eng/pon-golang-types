@@ -38,7 +38,7 @@ type BuilderBlockBid struct {
 type BlockBidResponse struct {
 	Success       bool            `json:"success"`
 	Message       string          `json:"message"`
-	RelayResponse interface{}     `json:"relay_response"`
+	RelayResponse BuilderBidRelay `json:"relay_response"`
 	BlockBid      BuilderBlockBid `json:"block_bid"`
 }
 
