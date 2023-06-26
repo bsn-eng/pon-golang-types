@@ -36,7 +36,7 @@ type BuilderBlockBid struct {
 }
 
 type BlockBidResponse struct {
-	RelayResponse BuilderBidRelay `json:"relay_response"`
+	RelayResponse interface{} `json:"relay_response"`
 	BlockBid      BuilderBlockBid `json:"block_bid"`
 }
 
