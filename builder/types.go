@@ -36,16 +36,14 @@ type BuilderBlockBid struct {
 }
 
 type BlockBidResponse struct {
-	Success       bool            `json:"success"`
-	Message       string          `json:"message"`
-	RelayResponse BuilderBidRelay `json:"relay_response"`
+	RelayResponse interface{} `json:"relay_response"`
 	BlockBid      BuilderBlockBid `json:"block_bid"`
 }
 
 type BuilderBidRelay struct {
+	BidID             string `json:"bid_id"`
+	HighestBidValue   uint64 `json:"highest_bid_value,string"`
 	HighestBidBuilder string `json:"highest_bid_builder"`
-	Bid               string `json:"bid"`
-	Value             uint64 `json:"value"`
 }
 
 type BidPayload struct {
