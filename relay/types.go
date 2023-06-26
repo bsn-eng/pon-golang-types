@@ -2,11 +2,13 @@ package relay
 
 import (
 	"encoding/json"
+	"sync"
 
 	"github.com/attestantio/go-eth2-client/spec/capella"
 	"github.com/attestantio/go-eth2-client/spec/phase0"
-	rpbsTypes "github.com/bsn-eng/pon-golang-types/rpbs"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+
+	rpbsTypes "github.com/bsn-eng/pon-golang-types/rpbs"
 )
 
 type Address [20]byte
@@ -65,4 +67,10 @@ type BidTrace struct {
 	PayoutPoolTransaction  Transaction                     `json:"payout_pool_transaction"`
 	RPBS                   *rpbsTypes.EncodedRPBSSignature `json:"rpbs"`
 	RPBSPubkey             string                          `json:"rpbs_pubkey"`
+}
+
+type ValidatorIndexes struct {
+	Mu                   sync.Mutex
+	ValidatorPubkeyIndex map[string]uint64
+	ValidatorIndexPubkey map[uint64]string
 }
