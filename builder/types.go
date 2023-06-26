@@ -45,6 +45,7 @@ type BlockBidResponse struct {
 type BuilderBidRelay struct {
 	HighestBidBuilder string `json:"highest_bid_builder"`
 	Bid               string `json:"bid"`
+	Value             uint64 `json:"value"`
 }
 
 type BidPayload struct {
