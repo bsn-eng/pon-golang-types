@@ -39,7 +39,6 @@ type BuilderBlockBid struct {
 
 type BlockBidResponse struct {
 	RelayResponse interface{}     `json:"relay_response"`
-	Error         error           `json:"error"`
 	BlockBid      BuilderBlockBid `json:"block_bid"`
 	BidRequestTime time.Time       `json:"bid_request_time"`
 	BlockBuiltTime time.Time       `json:"block_built_time"`
