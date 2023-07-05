@@ -43,7 +43,7 @@ type BlockBidResponse struct {
 	BlockBid      BuilderBlockBid `json:"block_bid"`
 	BidRequestTime time.Time       `json:"bid_request_time"`
 	BlockBuiltTime time.Time       `json:"block_built_time"`
-	RelaySubmissionTime time.Time  `json:"relay_submission_time"`
+	BlockSubmittedTime time.Time  `json:"block_submitted_time"`
 }
 
 type BuilderBidRelay struct {
