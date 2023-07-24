@@ -3,19 +3,25 @@ package rpc
 
 // RPC Params
 
-type JSONrpcPrivateRawTxs []string
+type JSONrpcPrivateRawTxs struct {
+	Txs []string `json:"txs"`
+}
 
 type JSONrpcPrivateTx struct {
 	Tx string `json:"tx"`
 }
 
-type JSONrpcPrivateTxs []JSONrpcPrivateTx
+type JSONrpcPrivateTxs struct {
+	Txs []JSONrpcPrivateTx `json:"txs"`
+}
 
 type JSONrpcPrivateTxHash struct {
 	TxHash string `json:"txHash"`
 }
 
-type JSONrpcPrivateTxHashes []JSONrpcPrivateTxHash
+type JSONrpcPrivateTxHashes struct {
+	TxHashes []JSONrpcPrivateTxHash `json:"txHashes"`
+}
 
 type JSONrpcBundle struct {
 	ID string `json:"id,omitempty"`  // ID is the bundle ID
@@ -30,4 +36,6 @@ type JSONrpcBundleHash struct {
 	BundleHash string `json:"bundleHash"`
 }
 
-type JSONrpcBundleHashes []JSONrpcBundleHash
+type JSONrpcBundleHashes struct {
+	BundleHashes []JSONrpcBundleHash `json:"bundleHashes"`
+}
