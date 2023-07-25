@@ -15,11 +15,11 @@ type BuilderBundleEntry struct {
 	InsertedAt time.Time `db:"inserted_at" json:"inserted_at"`
 
 	BundleHash        string `db:"bundle_hash"`
-	Txs               string `db:"txs"`
+	Txs               string `db:"txs" json:"txs,omitempty"`
 	BlockNumber       uint64 `db:"block_number" json:"block_number,string"`
 	MinTimestamp      uint64 `db:"min_timestamp" json:"min_timestamp,string,omitempty"`
 	MaxTimestamp      uint64 `db:"max_timestamp" json:"max_timestamp,string,omitempty"`
-	RevertingTxHashes string `db:"reverting_tx_hashes"`
+	RevertingTxHashes string `db:"reverting_tx_hashes" json:"reverting_tx_hashes,omitempty"` // Comma-separated list of hex-encoded hashes
 
 	BuilderPubkey    string `db:"builder_pubkey"`
 	BuilderSignature string `db:"builder_signature"`
