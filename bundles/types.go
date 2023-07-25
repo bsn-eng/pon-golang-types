@@ -103,7 +103,11 @@ func BuilderBundleToEntry(b *BuilderBundle) (*BuilderBundleEntry, error) {
 func BuilderBundleEntryToBundle(b *BuilderBundleEntry) (*BuilderBundle, error) {
 
 	var txs []*types.Transaction
-	for _, txBytesEncoded := range strings.Split(b.Txs, ",") {
+	txList := strings.Split(b.Txs, ",")
+	for _, txBytesEncoded := range txList {
+		if txBytesEncoded == "" {
+			continue
+		}
 		txBytes, err := hexutil.Decode(txBytesEncoded)
 		if err != nil {
 			return nil, fmt.Errorf("error decoding tx bytes: %v", err)
@@ -113,10 +117,15 @@ func BuilderBundleEntryToBundle(b *BuilderBundleEntry) (*BuilderBundle, error) {
 		if err != nil {
 			return nil, fmt.Errorf("error unmarshalling tx: %v", err)
 		}
+		txs = append(txs, &tx)
 	}
 
 	var revertingTxHashes []*common.Hash
-	for _, txHash := range strings.Split(b.RevertingTxHashes, ",") {
+	revertingTxHashesList := strings.Split(b.RevertingTxHashes, ",")
+	for _, txHash := range revertingTxHashesList {
+		if txHash == "" {
+			continue
+		}
 		hash := common.HexToHash(txHash)
 		revertingTxHashes = append(revertingTxHashes, &hash)
 	}
