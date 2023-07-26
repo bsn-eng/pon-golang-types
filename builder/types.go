@@ -1,6 +1,8 @@
 package builder
 
 import (
+	"time"
+
 	capella "github.com/attestantio/go-eth2-client/spec/capella"
 	bundleTypes "github.com/bsn-eng/pon-golang-types/bundles"
 	commonTypes "github.com/bsn-eng/pon-golang-types/common"
@@ -36,8 +38,11 @@ type BuilderBlockBid struct {
 }
 
 type BlockBidResponse struct {
-	RelayResponse interface{} `json:"relay_response"`
+	RelayResponse interface{}     `json:"relay_response"`
 	BlockBid      BuilderBlockBid `json:"block_bid"`
+	BidRequestTime time.Time       `json:"bid_request_time"`
+	BlockBuiltTime time.Time       `json:"block_built_time"`
+	BlockSubmittedTime time.Time  `json:"block_submitted_time"`
 }
 
 type BuilderBidRelay struct {
