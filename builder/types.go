@@ -25,7 +25,7 @@ type BuilderPayloadAttributes struct {
 	NoMempoolTxs          bool                        `json:"noMempoolTxs,string"`
 	PayoutPoolAddress     gethCommon.Address          `json:"payoutPoolAddress"`
 	Bundles               []bundleTypes.BuilderBundle `json:"bundles"`
-	Bounty bool `json:"bounty"`
+	Bounty                bool                        `json:"bounty"`
 }
 
 type PrivateTransactionsPayload struct {
@@ -39,11 +39,11 @@ type BuilderBlockBid struct {
 }
 
 type BlockBidResponse struct {
-	RelayResponse interface{}     `json:"relay_response"`
-	BlockBid      BuilderBlockBid `json:"block_bid"`
-	BidRequestTime time.Time       `json:"bid_request_time"`
-	BlockBuiltTime time.Time       `json:"block_built_time"`
-	BlockSubmittedTime time.Time  `json:"block_submitted_time"`
+	RelayResponse      interface{}     `json:"relay_response"`
+	BlockBid           BuilderBlockBid `json:"block_bid"`
+	BidRequestTime     time.Time       `json:"bid_request_time"`
+	BlockBuiltTime     time.Time       `json:"block_built_time"`
+	BlockSubmittedTime time.Time       `json:"block_submitted_time"`
 }
 
 type BuilderBidRelay struct {
