@@ -25,7 +25,6 @@ type BuilderPayloadAttributes struct {
 	NoMempoolTxs          bool                        `json:"noMempoolTxs,string"`
 	PayoutPoolAddress     gethCommon.Address          `json:"payoutPoolAddress"`
 	Bundles               []bundleTypes.BuilderBundle `json:"bundles"`
-	Bounty                bool                        `json:"bounty"`
 }
 
 type PrivateTransactionsPayload struct {
