@@ -5,13 +5,13 @@ import (
 	"database/sql"
 	"embed"
 	"fmt"
-	"math/big"
 	"time"
 
-	rpbsTypes "github.com/bsn-eng/pon-golang-types/rpbs"
 	migrate "github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/source/iofs"
 	"github.com/sirupsen/logrus"
+
+	rpbsTypes "github.com/bsn-eng/pon-golang-types/rpbs"
 )
 
 var Content embed.FS
@@ -83,7 +83,7 @@ type ValidatorReturnedBlockDatabase struct {
 
 type ValidatorDeliveredHeaderDatabase struct {
 	Slot           uint64
-	Value          big.Int
+	Value          uint64
 	BlockHash      string
 	ProposerPubkey string
 }
