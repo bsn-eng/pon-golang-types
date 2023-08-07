@@ -10,8 +10,6 @@ import (
 	migrate "github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/source/iofs"
 	"github.com/sirupsen/logrus"
-
-	rpbsTypes "github.com/bsn-eng/pon-golang-types/rpbs"
 )
 
 var Content embed.FS
@@ -92,7 +90,7 @@ type BuilderBlockDatabase struct {
 	Slot             uint64
 	BuilderPubkey    string
 	BuilderSignature string
-	RPBS             rpbsTypes.EncodedRPBSSignature
+	RPBS             string
 	TransactionByte  string
 	Value            uint64
 }
