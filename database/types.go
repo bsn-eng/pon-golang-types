@@ -81,9 +81,9 @@ type ValidatorReturnedBlockDatabase struct {
 
 type ValidatorDeliveredHeaderDatabase struct {
 	Slot           uint64
-	Value          uint64
 	BlockHash      string
 	ProposerPubkey string
+	BidValue       uint64
 }
 
 type BuilderBlockDatabase struct {
@@ -93,7 +93,7 @@ type BuilderBlockDatabase struct {
 	RPBS             string
 	RpbsPublicKey    string
 	TransactionByte  string
-	Value            uint64
+	BidValue         uint64
 }
 
 func (builderSubmission *BuilderBlockDatabase) Hash() string {
@@ -101,7 +101,7 @@ func (builderSubmission *BuilderBlockDatabase) Hash() string {
 		builderSubmission.Slot,
 		builderSubmission.BuilderPubkey,
 		builderSubmission.BuilderSignature,
-		builderSubmission.Value,
+		builderSubmission.BidValue,
 	)
 	BuilderSubmissionHash := sha256.Sum256([]byte(BuilderBid))
 
