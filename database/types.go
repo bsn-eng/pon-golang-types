@@ -91,6 +91,7 @@ type BuilderBlockDatabase struct {
 	BuilderPubkey    string
 	BuilderSignature string
 	RPBS             string
+	RpbsPublicKey    string
 	TransactionByte  string
 	Value            uint64
 }
