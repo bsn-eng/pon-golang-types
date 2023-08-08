@@ -87,13 +87,14 @@ type ValidatorDeliveredHeaderDatabase struct {
 }
 
 type BuilderBlockDatabase struct {
-	Slot             uint64
-	BuilderPubkey    string
-	BuilderSignature string
-	RPBS             string
-	RpbsPublicKey    string
-	TransactionByte  string
-	BidValue         uint64
+	Slot                   uint64
+	BuilderPubkey          string
+	BuilderBlockSubmission string
+	BuilderSignature       string
+	RPBS                   string
+	RpbsPublicKey          string
+	TransactionByte        string
+	BidValue               uint64
 }
 
 func (builderSubmission *BuilderBlockDatabase) Hash() string {
