@@ -107,4 +107,5 @@ func (builderSubmission *BuilderBlockDatabase) Hash() string {
 	BuilderSubmissionHash := sha256.Sum256([]byte(BuilderBid))
 
 	return fmt.Sprintf("%#x", BuilderSubmissionHash)
+
 }
