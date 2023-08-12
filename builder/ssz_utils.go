@@ -37,7 +37,7 @@ func (b *BidPayload) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 	// Field (7) 'GasUsed'
 	hh.PutUint64(b.GasUsed)
 
-	// Field (8) 'Value' where b.Value is a *big.Int
+	// Field (8) 'Value'
 	hh.PutBytes(b.Value.Bytes())
 
 	// Field (9) 'ExecutionPayloadHeader'
