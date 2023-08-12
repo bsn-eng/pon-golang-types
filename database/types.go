@@ -5,10 +5,8 @@ import (
 	"database/sql"
 	"embed"
 	"fmt"
-	"math/big"
 	"time"
 
-	rpbsTypes "github.com/bsn-eng/pon-golang-types/rpbs"
 	migrate "github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/source/iofs"
 	"github.com/sirupsen/logrus"
@@ -83,18 +81,20 @@ type ValidatorReturnedBlockDatabase struct {
 
 type ValidatorDeliveredHeaderDatabase struct {
 	Slot           uint64
-	Value          big.Int
 	BlockHash      string
 	ProposerPubkey string
+	BidValue       uint64
 }
 
 type BuilderBlockDatabase struct {
 	Slot             uint64
 	BuilderPubkey    string
+	BuilderBidHash   string
 	BuilderSignature string
-	RPBS             rpbsTypes.EncodedRPBSSignature
+	RPBS             string
+	RpbsPublicKey    string
 	TransactionByte  string
-	Value            uint64
+	BidValue         uint64
 }
 
 func (builderSubmission *BuilderBlockDatabase) Hash() string {
@@ -102,9 +102,10 @@ func (builderSubmission *BuilderBlockDatabase) Hash() string {
 		builderSubmission.Slot,
 		builderSubmission.BuilderPubkey,
 		builderSubmission.BuilderSignature,
-		builderSubmission.Value,
+		builderSubmission.BidValue,
 	)
 	BuilderSubmissionHash := sha256.Sum256([]byte(BuilderBid))
 
 	return fmt.Sprintf("%#x", BuilderSubmissionHash)
+
 }
