@@ -21,7 +21,7 @@ type BuilderPayloadAttributes struct {
 	SuggestedFeeRecipient gethCommon.Address          `json:"suggestedFeeRecipient"`
 	Slot                  uint64                      `json:"slot,string"`
 	HeadHash              gethCommon.Hash             `json:"headHash"`
-	BidAmount             *big.Int                    `json:"bidAmount,string"`
+	BidAmount             *big.Int                    `json:"bidAmount"`
 	GasLimit              uint64                      `json:"gasLimit,string"`
 	Transactions          [][]byte                    `json:"transactions"`
 	Withdrawals           types.Withdrawals           `json:"withdrawals"`
@@ -33,7 +33,7 @@ type BuilderPayloadAttributes struct {
 func (b *BuilderPayloadAttributes) UnmarshalJSON(data []byte) error {
 	type Alias BuilderPayloadAttributes
 	aux := &struct {
-		BidAmount string `json:"bidAmount,string"`
+		BidAmount string `json:"bidAmount"`
 		*Alias
 	}{
 		Alias: (*Alias)(b),
@@ -54,7 +54,7 @@ func (b *BuilderPayloadAttributes) UnmarshalJSON(data []byte) error {
 func (b *BuilderPayloadAttributes) MarshalJSON() ([]byte, error) {
 	type Alias BuilderPayloadAttributes
 	aux := &struct {
-		BidAmount string `json:"bidAmount,string"`
+		BidAmount string `json:"bidAmount"`
 		*Alias
 	}{
 		Alias:     (*Alias)(b),
@@ -90,7 +90,7 @@ type BidPayload struct {
 	ProposerFeeRecipient commonTypes.Address   `json:"proposer_fee_recipient" ssz-size:"20"`
 	GasLimit             uint64                `json:"gas_limit,string"`
 	GasUsed              uint64                `json:"gas_used,string"`
-	Value                *big.Int              `json:"value,string"`
+	Value                *big.Int              `json:"value"`
 
 	ExecutionPayloadHeader *capella.ExecutionPayloadHeader `json:"execution_payload_header"`
 	Endpoint               string                          `json:"endpoint"`
@@ -103,7 +103,7 @@ type BidPayload struct {
 func (b *BidPayload) UnmarshalJSON(data []byte) error {
 	type Alias BidPayload
 	aux := &struct {
-		Value string `json:"value,string"`
+		Value string `json:"value"`
 		*Alias
 	}{
 		Alias: (*Alias)(b),
@@ -124,7 +124,7 @@ func (b *BidPayload) UnmarshalJSON(data []byte) error {
 func (b *BidPayload) MarshalJSON() ([]byte, error) {
 	type Alias BidPayload
 	aux := &struct {
-		Value string `json:"value,string"`
+		Value string `json:"value"`
 		*Alias
 	}{
 		Alias: (*Alias)(b),

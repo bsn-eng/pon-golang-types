@@ -18,7 +18,7 @@ type RPBSCommitMessage struct {
 func (r *RPBSCommitMessage) UnmarshalJSON(data []byte) error {
 	type Alias RPBSCommitMessage
 	aux := &struct {
-		Amount string `json:"amount,string"`
+		Amount string `json:"amount"`
 		*Alias
 	}{
 		Alias: (*Alias)(r),
@@ -39,7 +39,7 @@ func (r *RPBSCommitMessage) UnmarshalJSON(data []byte) error {
 func (r *RPBSCommitMessage) MarshalJSON() ([]byte, error) {
 	type Alias RPBSCommitMessage
 	aux := &struct {
-		Amount string `json:"amount,string"`
+		Amount string `json:"amount"`
 		*Alias
 	}{
 		Alias:     (*Alias)(r),
