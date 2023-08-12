@@ -30,38 +30,38 @@ type BuilderPayloadAttributes struct {
 	Bundles               []bundleTypes.BuilderBundle `json:"bundles"`
 }
 
-func (b *BuilderPayloadAttributes) UnmarshalJSON(data []byte) error {
-	type Alias BuilderPayloadAttributes
-	aux := &struct {
-		BidAmount string `json:"bidAmount"`
-		*Alias
-	}{
-		Alias: (*Alias)(b),
-	}
+// func (b *BuilderPayloadAttributes) UnmarshalJSON(data []byte) error {
+// 	type Alias BuilderPayloadAttributes
+// 	aux := &struct {
+// 		BidAmount string `json:"bidAmount"`
+// 		*Alias
+// 	}{
+// 		Alias: (*Alias)(b),
+// 	}
 
-	if err := json.Unmarshal(data, &aux); err != nil {
-		return err
-	}
+// 	if err := json.Unmarshal(data, &aux); err != nil {
+// 		return err
+// 	}
 
-	b.BidAmount = new(big.Int)
-	if _, ok := b.BidAmount.SetString(aux.BidAmount, 10); !ok {
-		return fmt.Errorf("could not convert string to big.Int")
-	}
+// 	b.BidAmount = new(big.Int)
+// 	if _, ok := b.BidAmount.SetString(aux.BidAmount, 10); !ok {
+// 		return fmt.Errorf("could not convert string to big.Int")
+// 	}
 
-	return nil
-}
+// 	return nil
+// }
 
-func (b *BuilderPayloadAttributes) MarshalJSON() ([]byte, error) {
-	type Alias BuilderPayloadAttributes
-	aux := &struct {
-		BidAmount string `json:"bidAmount"`
-		*Alias
-	}{
-		Alias:     (*Alias)(b),
-		BidAmount: b.BidAmount.String(),
-	}
-	return json.Marshal(aux)
-}
+// func (b *BuilderPayloadAttributes) MarshalJSON() ([]byte, error) {
+// 	type Alias BuilderPayloadAttributes
+// 	aux := &struct {
+// 		BidAmount string `json:"bidAmount"`
+// 		*Alias
+// 	}{
+// 		Alias:     (*Alias)(b),
+// 		BidAmount: b.BidAmount.String(),
+// 	}
+// 	return json.Marshal(aux)
+// }
 
 type PrivateTransactionsPayload struct {
 	Transactions [][]byte `json:"transactions"`

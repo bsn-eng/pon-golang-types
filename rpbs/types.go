@@ -2,8 +2,8 @@ package rpbs
 
 import (
 	"math/big"
-	"encoding/json"
-	"fmt"
+	// "encoding/json"
+	// "fmt"
 	ssz "github.com/ferranbt/fastssz"
 )
 
@@ -15,39 +15,39 @@ type RPBSCommitMessage struct {
 	TxBytes              []string `json:"txBytes"`
 }
 
-func (r *RPBSCommitMessage) UnmarshalJSON(data []byte) error {
-	type Alias RPBSCommitMessage
-	aux := &struct {
-		Amount string `json:"amount"`
-		*Alias
-	}{
-		Alias: (*Alias)(r),
-	}
+// func (r *RPBSCommitMessage) UnmarshalJSON(data []byte) error {
+// 	type Alias RPBSCommitMessage
+// 	aux := &struct {
+// 		Amount string `json:"amount"`
+// 		*Alias
+// 	}{
+// 		Alias: (*Alias)(r),
+// 	}
 
-	if err := json.Unmarshal(data, &aux); err != nil {
-		return err
-	}
+// 	if err := json.Unmarshal(data, &aux); err != nil {
+// 		return err
+// 	}
 
-	r.Amount = new(big.Int)
-	if _, ok := r.Amount.SetString(aux.Amount, 10); !ok {
-		return fmt.Errorf("could not convert string to big.Int")
-	}
+// 	r.Amount = new(big.Int)
+// 	if _, ok := r.Amount.SetString(aux.Amount, 10); !ok {
+// 		return fmt.Errorf("could not convert string to big.Int")
+// 	}
 
-	return nil
-}
+// 	return nil
+// }
 
-func (r *RPBSCommitMessage) MarshalJSON() ([]byte, error) {
-	type Alias RPBSCommitMessage
-	aux := &struct {
-		Amount string `json:"amount"`
-		*Alias
-	}{
-		Alias:     (*Alias)(r),
-		Amount: r.Amount.String(),
-	}
+// func (r *RPBSCommitMessage) MarshalJSON() ([]byte, error) {
+// 	type Alias RPBSCommitMessage
+// 	aux := &struct {
+// 		Amount string `json:"amount"`
+// 		*Alias
+// 	}{
+// 		Alias:     (*Alias)(r),
+// 		Amount: r.Amount.String(),
+// 	}
 
-	return json.Marshal(aux)
-}
+// 	return json.Marshal(aux)
+// }
 
 type EncodedRPBSSignature struct {
 	Z1Hat string `json:"z1Hat"`
