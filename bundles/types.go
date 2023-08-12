@@ -2,6 +2,7 @@ package bundles
 
 import (
 	"fmt"
+	"math/big"
 	"strings"
 	"time"
 
@@ -24,8 +25,8 @@ type BuilderBundleEntry struct {
 	BuilderPubkey    string `db:"builder_pubkey"`
 	BuilderSignature string `db:"builder_signature"`
 
-	BundleTransactionCount uint64 `db:"bundle_transaction_count" json:"bundle_transaction_count,string"`
-	BundleTotalGas         uint64 `db:"bundle_total_gas" json:"bundle_total_gas,string"`
+	BundleTransactionCount uint64   `db:"bundle_transaction_count" json:"bundle_transaction_count,string"`
+	BundleTotalGas         *big.Int `db:"bundle_total_gas" json:"bundle_total_gas,string"`
 
 	Added        bool   `db:"added"`
 	Error        bool   `db:"error"`
@@ -50,7 +51,7 @@ type BuilderBundle struct {
 	BuilderSignature string
 
 	BundleTransactionCount uint64
-	BundleTotalGas         uint64
+	BundleTotalGas         *big.Int
 
 	BundleDateTime time.Time
 

@@ -1,13 +1,14 @@
 package rpbs
 
 import (
+	"math/big"
 	ssz "github.com/ferranbt/fastssz"
 )
 
 type RPBSCommitMessage struct {
 	BuilderWalletAddress string `json:"builderWalletAddress"`
 	Slot                 uint64 `json:"slot"`
-	Amount               uint64 `json:"amount"`
+	Amount               *big.Int `json:"amount"`
 	PayoutTxBytes        string `json:"payoutTxBytes"`
 	TxBytes              []string `json:"txBytes"`
 }

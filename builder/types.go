@@ -1,6 +1,7 @@
 package builder
 
 import (
+	"math/big"
 	"time"
 
 	capella "github.com/attestantio/go-eth2-client/spec/capella"
@@ -18,7 +19,7 @@ type BuilderPayloadAttributes struct {
 	SuggestedFeeRecipient gethCommon.Address          `json:"suggestedFeeRecipient"`
 	Slot                  uint64                      `json:"slot,string"`
 	HeadHash              gethCommon.Hash             `json:"headHash"`
-	BidAmount             uint64                      `json:"bidAmount,string"`
+	BidAmount             *big.Int                    `json:"bidAmount,string"`
 	GasLimit              uint64                      `json:"gasLimit,string"`
 	Transactions          [][]byte                    `json:"transactions"`
 	Withdrawals           types.Withdrawals           `json:"withdrawals"`
@@ -45,12 +46,6 @@ type BlockBidResponse struct {
 	BlockSubmittedTime time.Time       `json:"block_submitted_time"`
 }
 
-type BuilderBidRelay struct {
-	BidID             string `json:"bid_id"`
-	HighestBidValue   uint64 `json:"highest_bid_value,string"`
-	HighestBidBuilder string `json:"highest_bid_builder"`
-}
-
 type BidPayload struct {
 	Slot                 uint64                `json:"slot,string"`
 	ParentHash           commonTypes.Hash      `json:"parent_hash" ssz-size:"32"`
@@ -60,7 +55,7 @@ type BidPayload struct {
 	ProposerFeeRecipient commonTypes.Address   `json:"proposer_fee_recipient" ssz-size:"20"`
 	GasLimit             uint64                `json:"gas_limit,string"`
 	GasUsed              uint64                `json:"gas_used,string"`
-	Value                uint64                `json:"value,string"`
+	Value                *big.Int              `json:"value,string"`
 
 	ExecutionPayloadHeader *capella.ExecutionPayloadHeader `json:"execution_payload_header"`
 	Endpoint               string                          `json:"endpoint"`
