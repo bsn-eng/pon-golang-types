@@ -2,6 +2,8 @@ package rpbs
 
 import (
 	"math/big"
+	"encoding/json"
+	"fmt"
 	ssz "github.com/ferranbt/fastssz"
 )
 
@@ -11,6 +13,40 @@ type RPBSCommitMessage struct {
 	Amount               *big.Int `json:"amount"`
 	PayoutTxBytes        string `json:"payoutTxBytes"`
 	TxBytes              []string `json:"txBytes"`
+}
+
+func (r *RPBSCommitMessage) UnmarshalJSON(data []byte) error {
+	type Alias RPBSCommitMessage
+	aux := &struct {
+		Amount string `json:"amount,string"`
+		*Alias
+	}{
+		Alias: (*Alias)(r),
+	}
+
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+
+	r.Amount = new(big.Int)
+	if _, ok := r.Amount.SetString(aux.Amount, 10); !ok {
+		return fmt.Errorf("could not convert string to big.Int")
+	}
+
+	return nil
+}
+
+func (r *RPBSCommitMessage) MarshalJSON() ([]byte, error) {
+	type Alias RPBSCommitMessage
+	aux := &struct {
+		Amount string `json:"amount,string"`
+		*Alias
+	}{
+		Alias:     (*Alias)(r),
+		Amount: r.Amount.String(),
+	}
+
+	return json.Marshal(aux)
 }
 
 type EncodedRPBSSignature struct {

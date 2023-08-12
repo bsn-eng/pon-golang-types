@@ -1,6 +1,8 @@
 package builder
 
 import (
+	"encoding/json"
+	"fmt"
 	"math/big"
 	"time"
 
@@ -26,6 +28,39 @@ type BuilderPayloadAttributes struct {
 	NoMempoolTxs          bool                        `json:"noMempoolTxs,string"`
 	PayoutPoolAddress     gethCommon.Address          `json:"payoutPoolAddress"`
 	Bundles               []bundleTypes.BuilderBundle `json:"bundles"`
+}
+
+func (b *BuilderPayloadAttributes) UnmarshalJSON(data []byte) error {
+	type Alias BuilderPayloadAttributes
+	aux := &struct {
+		BidAmount string `json:"bidAmount,string"`
+		*Alias
+	}{
+		Alias: (*Alias)(b),
+	}
+
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+
+	b.BidAmount = new(big.Int)
+	if _, ok := b.BidAmount.SetString(aux.BidAmount, 10); !ok {
+		return fmt.Errorf("could not convert string to big.Int")
+	}
+
+	return nil
+}
+
+func (b *BuilderPayloadAttributes) MarshalJSON() ([]byte, error) {
+	type Alias BuilderPayloadAttributes
+	aux := &struct {
+		BidAmount string `json:"bidAmount,string"`
+		*Alias
+	}{
+		Alias:     (*Alias)(b),
+		BidAmount: b.BidAmount.String(),
+	}
+	return json.Marshal(aux)
 }
 
 type PrivateTransactionsPayload struct {
@@ -63,4 +98,37 @@ type BidPayload struct {
 	PayoutPoolTransaction  []byte                          `json:"payout_pool_transaction"`
 	RPBS                   *rpbsTypes.EncodedRPBSSignature `json:"rpbs"`
 	RPBSPubkey             string                          `json:"rpbs_pubkey"`
+}
+
+func (b *BidPayload) UnmarshalJSON(data []byte) error {
+	type Alias BidPayload
+	aux := &struct {
+		Value string `json:"value,string"`
+		*Alias
+	}{
+		Alias: (*Alias)(b),
+	}
+
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+
+	b.Value = new(big.Int)
+	if _, ok := b.Value.SetString(aux.Value, 10); !ok {
+		return fmt.Errorf("could not convert string to big.Int")
+	}
+
+	return nil
+}
+
+func (b *BidPayload) MarshalJSON() ([]byte, error) {
+	type Alias BidPayload
+	aux := &struct {
+		Value string `json:"value,string"`
+		*Alias
+	}{
+		Alias: (*Alias)(b),
+		Value: b.Value.String(),
+	}
+	return json.Marshal(aux)
 }
