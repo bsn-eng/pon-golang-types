@@ -24,44 +24,87 @@ type BuilderPayloadAttributes struct {
 	BidAmount             *big.Int                    `json:"bidAmount"`
 	GasLimit              uint64                      `json:"gasLimit,string"`
 	Transactions          [][]byte                    `json:"transactions"`
-	Withdrawals           types.Withdrawals           `json:"withdrawals"`
 	NoMempoolTxs          bool                        `json:"noMempoolTxs,string"`
 	PayoutPoolAddress     gethCommon.Address          `json:"payoutPoolAddress"`
-	Bundles               []bundleTypes.BuilderBundle `json:"bundles"`
+	Withdrawals           types.Withdrawals           `json:"-"`
+	Bundles               []bundleTypes.BuilderBundle `json:"-"`
 }
 
-// func (b *BuilderPayloadAttributes) UnmarshalJSON(data []byte) error {
-// 	type Alias BuilderPayloadAttributes
-// 	aux := &struct {
-// 		BidAmount string `json:"bidAmount"`
-// 		*Alias
-// 	}{
-// 		Alias: (*Alias)(b),
-// 	}
 
-// 	if err := json.Unmarshal(data, &aux); err != nil {
-// 		return err
-// 	}
+// UnmarshalJSON implements the json.Unmarshaler interface purposefully for
+// receiving a payload from the API.
+func (b *BuilderPayloadAttributes) UnmarshalJSON(data []byte) error {
+	type BuilderPayloadAttributesJSON struct {
+		Timestamp             string                      `json:"timestamp"`
+		Random                string                      `json:"prevRandao"`
+		SuggestedFeeRecipient string                      `json:"suggestedFeeRecipient"`
+		Slot                  string                      `json:"slot"`
+		HeadHash              string                      `json:"headHash"`
+		BidAmount             string                      `json:"bidAmount"`
+		GasLimit              string                      `json:"gasLimit"`
+		Transactions          []string                    `json:"transactions"`
+		NoMempoolTxs          string                      `json:"noMempoolTxs"`
+		PayoutPoolAddress     string                      `json:"payoutPoolAddress"`
+	}
 
-// 	b.BidAmount = new(big.Int)
-// 	if _, ok := b.BidAmount.SetString(aux.BidAmount, 10); !ok {
-// 		return fmt.Errorf("could not convert string to big.Int")
-// 	}
+	var aux BuilderPayloadAttributesJSON
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
 
-// 	return nil
-// }
+	b.Timestamp = hexutil.Uint64(0)
+	if err := b.Timestamp.UnmarshalText([]byte(aux.Timestamp)); err != nil {
+		return err
+	}
 
-// func (b *BuilderPayloadAttributes) MarshalJSON() ([]byte, error) {
-// 	type Alias BuilderPayloadAttributes
-// 	aux := &struct {
-// 		BidAmount string `json:"bidAmount"`
-// 		*Alias
-// 	}{
-// 		Alias:     (*Alias)(b),
-// 		BidAmount: b.BidAmount.String(),
-// 	}
-// 	return json.Marshal(aux)
-// }
+	b.Random = gethCommon.Hash{}
+	if err := b.Random.UnmarshalText([]byte(aux.Random)); err != nil {
+		return err
+	}
+
+	b.SuggestedFeeRecipient = gethCommon.Address{}
+	if err := b.SuggestedFeeRecipient.UnmarshalText([]byte(aux.SuggestedFeeRecipient)); err != nil {
+		return err
+	}
+
+	b.Slot = 0
+	if _, err := fmt.Sscan(aux.Slot, &b.Slot); err != nil {
+		return err
+	}
+
+	b.HeadHash = gethCommon.Hash{}
+	if err := b.HeadHash.UnmarshalText([]byte(aux.HeadHash)); err != nil {
+		return err
+	}
+
+	b.BidAmount = big.NewInt(0)
+	if _, ok := b.BidAmount.SetString(aux.BidAmount, 10); !ok {
+		return fmt.Errorf("failed to parse bid amount %s", aux.BidAmount)
+	}
+
+	b.GasLimit = 0
+	if _, err := fmt.Sscan(aux.GasLimit, &b.GasLimit); err != nil {
+		return err
+	}
+
+	b.Transactions = make([][]byte, len(aux.Transactions))
+	for i, tx := range aux.Transactions {
+		b.Transactions[i] = []byte(tx)
+	}
+	
+	b.NoMempoolTxs = false
+	if _, err := fmt.Sscan(aux.NoMempoolTxs, &b.NoMempoolTxs); err != nil {
+		return err
+	}
+
+	b.PayoutPoolAddress = gethCommon.Address{}
+	if err := b.PayoutPoolAddress.UnmarshalText([]byte(aux.PayoutPoolAddress)); err != nil {
+		return err
+	}
+
+	return nil
+
+}
 
 type PrivateTransactionsPayload struct {
 	Transactions [][]byte `json:"transactions"`
@@ -98,37 +141,4 @@ type BidPayload struct {
 	PayoutPoolTransaction  []byte                          `json:"payout_pool_transaction"`
 	RPBS                   *rpbsTypes.EncodedRPBSSignature `json:"rpbs"`
 	RPBSPubkey             string                          `json:"rpbs_pubkey"`
-}
-
-func (b *BidPayload) UnmarshalJSON(data []byte) error {
-	type Alias BidPayload
-	aux := &struct {
-		Value string `json:"value"`
-		*Alias
-	}{
-		Alias: (*Alias)(b),
-	}
-
-	if err := json.Unmarshal(data, &aux); err != nil {
-		return err
-	}
-
-	b.Value = new(big.Int)
-	if _, ok := b.Value.SetString(aux.Value, 10); !ok {
-		return fmt.Errorf("could not convert string to big.Int")
-	}
-
-	return nil
-}
-
-func (b *BidPayload) MarshalJSON() ([]byte, error) {
-	type Alias BidPayload
-	aux := &struct {
-		Value string `json:"value"`
-		*Alias
-	}{
-		Alias: (*Alias)(b),
-		Value: b.Value.String(),
-	}
-	return json.Marshal(aux)
 }
