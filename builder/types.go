@@ -30,21 +30,16 @@ type BuilderPayloadAttributes struct {
 	Bundles               []bundleTypes.BuilderBundle `json:"-"`
 }
 
-
 // UnmarshalJSON implements the json.Unmarshaler interface purposefully for
 // receiving a payload from the API.
 func (b *BuilderPayloadAttributes) UnmarshalJSON(data []byte) error {
 	type BuilderPayloadAttributesJSON struct {
-		Timestamp             string                      `json:"timestamp"`
-		Random                string                      `json:"prevRandao"`
-		SuggestedFeeRecipient string                      `json:"suggestedFeeRecipient"`
-		Slot                  string                      `json:"slot"`
-		HeadHash              string                      `json:"headHash"`
-		BidAmount             string                      `json:"bidAmount"`
-		GasLimit              string                      `json:"gasLimit"`
-		Transactions          []string                    `json:"transactions"`
-		NoMempoolTxs          string                      `json:"noMempoolTxs"`
-		PayoutPoolAddress     string                      `json:"payoutPoolAddress"`
+		SuggestedFeeRecipient string   `json:"suggestedFeeRecipient"`
+		Slot                  string   `json:"slot"`
+		BidAmount             string   `json:"bidAmount"`
+		Transactions          []string `json:"transactions"`
+		NoMempoolTxs          string   `json:"noMempoolTxs"`
+		PayoutPoolAddress     string   `json:"payoutPoolAddress"`
 	}
 
 	var aux BuilderPayloadAttributesJSON
@@ -52,54 +47,44 @@ func (b *BuilderPayloadAttributes) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	b.Timestamp = hexutil.Uint64(0)
-	if err := b.Timestamp.UnmarshalText([]byte(aux.Timestamp)); err != nil {
-		return err
-	}
-
-	b.Random = gethCommon.Hash{}
-	if err := b.Random.UnmarshalText([]byte(aux.Random)); err != nil {
-		return err
-	}
-
 	b.SuggestedFeeRecipient = gethCommon.Address{}
-	if err := b.SuggestedFeeRecipient.UnmarshalText([]byte(aux.SuggestedFeeRecipient)); err != nil {
-		return err
+	if len(aux.SuggestedFeeRecipient) > 0 {
+		if err := b.SuggestedFeeRecipient.UnmarshalText([]byte(aux.SuggestedFeeRecipient)); err != nil {
+			return err
+		}
 	}
 
 	b.Slot = 0
-	if _, err := fmt.Sscan(aux.Slot, &b.Slot); err != nil {
-		return err
-	}
-
-	b.HeadHash = gethCommon.Hash{}
-	if err := b.HeadHash.UnmarshalText([]byte(aux.HeadHash)); err != nil {
-		return err
+	if len(aux.Slot) > 0 {
+		if _, err := fmt.Sscan(aux.Slot, &b.Slot); err != nil {
+			return err
+		}
 	}
 
 	b.BidAmount = big.NewInt(0)
-	if _, ok := b.BidAmount.SetString(aux.BidAmount, 10); !ok {
-		return fmt.Errorf("failed to parse bid amount %s", aux.BidAmount)
-	}
-
-	b.GasLimit = 0
-	if _, err := fmt.Sscan(aux.GasLimit, &b.GasLimit); err != nil {
-		return err
+	if len(aux.BidAmount) > 0 {
+		if _, ok := b.BidAmount.SetString(aux.BidAmount, 10); !ok {
+			return fmt.Errorf("failed to parse bid amount %s", aux.BidAmount)
+		}
 	}
 
 	b.Transactions = make([][]byte, len(aux.Transactions))
 	for i, tx := range aux.Transactions {
 		b.Transactions[i] = []byte(tx)
 	}
-	
+
 	b.NoMempoolTxs = false
-	if _, err := fmt.Sscan(aux.NoMempoolTxs, &b.NoMempoolTxs); err != nil {
-		return err
+	if len(aux.NoMempoolTxs) > 0 {
+		if _, err := fmt.Sscan(aux.NoMempoolTxs, &b.NoMempoolTxs); err != nil {
+			return err
+		}
 	}
 
 	b.PayoutPoolAddress = gethCommon.Address{}
-	if err := b.PayoutPoolAddress.UnmarshalText([]byte(aux.PayoutPoolAddress)); err != nil {
-		return err
+	if len(aux.PayoutPoolAddress) > 0 {
+		if err := b.PayoutPoolAddress.UnmarshalText([]byte(aux.PayoutPoolAddress)); err != nil {
+			return err
+		}
 	}
 
 	return nil
