@@ -24,7 +24,7 @@ type BuilderBundleEntry struct {
 	BuilderPubkey    string `db:"builder_pubkey"`
 	BuilderSignature string `db:"builder_signature"`
 
-	BundleTransactionCount uint64 `db:"bundle_transaction_count" json:"bundle_transaction_count,string"`
+	BundleTransactionCount uint64   `db:"bundle_transaction_count" json:"bundle_transaction_count,string"`
 	BundleTotalGas         uint64 `db:"bundle_total_gas" json:"bundle_total_gas,string"`
 
 	Added        bool   `db:"added"`

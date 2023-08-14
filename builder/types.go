@@ -1,6 +1,9 @@
 package builder
 
 import (
+	"encoding/json"
+	"fmt"
+	"math/big"
 	"time"
 
 	capella "github.com/attestantio/go-eth2-client/spec/capella"
@@ -18,13 +21,74 @@ type BuilderPayloadAttributes struct {
 	SuggestedFeeRecipient gethCommon.Address          `json:"suggestedFeeRecipient"`
 	Slot                  uint64                      `json:"slot,string"`
 	HeadHash              gethCommon.Hash             `json:"headHash"`
-	BidAmount             uint64                      `json:"bidAmount,string"`
+	BidAmount             *big.Int                    `json:"bidAmount"`
 	GasLimit              uint64                      `json:"gasLimit,string"`
 	Transactions          [][]byte                    `json:"transactions"`
-	Withdrawals           types.Withdrawals           `json:"withdrawals"`
 	NoMempoolTxs          bool                        `json:"noMempoolTxs,string"`
 	PayoutPoolAddress     gethCommon.Address          `json:"payoutPoolAddress"`
-	Bundles               []bundleTypes.BuilderBundle `json:"bundles"`
+	Withdrawals           types.Withdrawals           `json:"-"`
+	Bundles               []bundleTypes.BuilderBundle `json:"-"`
+}
+
+// UnmarshalJSON implements the json.Unmarshaler interface purposefully for
+// receiving a payload from the API.
+func (b *BuilderPayloadAttributes) UnmarshalJSON(data []byte) error {
+	type BuilderPayloadAttributesJSON struct {
+		SuggestedFeeRecipient string   `json:"suggestedFeeRecipient"`
+		Slot                  string   `json:"slot"`
+		BidAmount             string   `json:"bidAmount"`
+		Transactions          []string `json:"transactions"`
+		NoMempoolTxs          string   `json:"noMempoolTxs"`
+		PayoutPoolAddress     string   `json:"payoutPoolAddress"`
+	}
+
+	var aux BuilderPayloadAttributesJSON
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+
+	b.SuggestedFeeRecipient = gethCommon.Address{}
+	if len(aux.SuggestedFeeRecipient) > 0 {
+		if err := b.SuggestedFeeRecipient.UnmarshalText([]byte(aux.SuggestedFeeRecipient)); err != nil {
+			return err
+		}
+	}
+
+	b.Slot = 0
+	if len(aux.Slot) > 0 {
+		if _, err := fmt.Sscan(aux.Slot, &b.Slot); err != nil {
+			return err
+		}
+	}
+
+	b.BidAmount = big.NewInt(0)
+	if len(aux.BidAmount) > 0 {
+		if _, ok := b.BidAmount.SetString(aux.BidAmount, 10); !ok {
+			return fmt.Errorf("failed to parse bid amount %s", aux.BidAmount)
+		}
+	}
+
+	b.Transactions = make([][]byte, len(aux.Transactions))
+	for i, tx := range aux.Transactions {
+		b.Transactions[i] = []byte(tx)
+	}
+
+	b.NoMempoolTxs = false
+	if len(aux.NoMempoolTxs) > 0 {
+		if _, err := fmt.Sscan(aux.NoMempoolTxs, &b.NoMempoolTxs); err != nil {
+			return err
+		}
+	}
+
+	b.PayoutPoolAddress = gethCommon.Address{}
+	if len(aux.PayoutPoolAddress) > 0 {
+		if err := b.PayoutPoolAddress.UnmarshalText([]byte(aux.PayoutPoolAddress)); err != nil {
+			return err
+		}
+	}
+
+	return nil
+
 }
 
 type PrivateTransactionsPayload struct {
@@ -45,12 +109,6 @@ type BlockBidResponse struct {
 	BlockSubmittedTime time.Time       `json:"block_submitted_time"`
 }
 
-type BuilderBidRelay struct {
-	BidID             string `json:"bid_id"`
-	HighestBidValue   uint64 `json:"highest_bid_value,string"`
-	HighestBidBuilder string `json:"highest_bid_builder"`
-}
-
 type BidPayload struct {
 	Slot                 uint64                `json:"slot,string"`
 	ParentHash           commonTypes.Hash      `json:"parent_hash" ssz-size:"32"`
@@ -60,7 +118,7 @@ type BidPayload struct {
 	ProposerFeeRecipient commonTypes.Address   `json:"proposer_fee_recipient" ssz-size:"20"`
 	GasLimit             uint64                `json:"gas_limit,string"`
 	GasUsed              uint64                `json:"gas_used,string"`
-	Value                uint64                `json:"value,string"`
+	Value                *big.Int              `json:"value"`
 
 	ExecutionPayloadHeader *capella.ExecutionPayloadHeader `json:"execution_payload_header"`
 	Endpoint               string                          `json:"endpoint"`
