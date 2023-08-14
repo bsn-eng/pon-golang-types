@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"embed"
 	"fmt"
+	"math/big"
 	"time"
 
 	migrate "github.com/golang-migrate/migrate/v4"
@@ -94,15 +95,15 @@ type BuilderBlockDatabase struct {
 	RPBS             string
 	RpbsPublicKey    string
 	TransactionByte  string
-	BidValue         uint64
+	BidValue         big.Int
 }
 
 func (builderSubmission *BuilderBlockDatabase) Hash() string {
-	BuilderBid := fmt.Sprintf("%d,%s,%s,%d",
+	BuilderBid := fmt.Sprintf("%d,%s,%s,%s",
 		builderSubmission.Slot,
 		builderSubmission.BuilderPubkey,
 		builderSubmission.BuilderSignature,
-		builderSubmission.BidValue,
+		builderSubmission.BidValue.String(),
 	)
 	BuilderSubmissionHash := sha256.Sum256([]byte(BuilderBid))
 
