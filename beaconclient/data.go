@@ -1,8 +1,7 @@
 package beaconclient
 
 import (
-	"github.com/attestantio/go-eth2-client/spec/capella"
-	// capellaApi "github.com/attestantio/go-eth2-client/api/v1/capella"
+	"github.com/attestantio/go-eth2-client/spec/deneb"
 	"github.com/ethereum/go-ethereum/common"
 )
 
@@ -62,7 +61,7 @@ type RandaoData struct {
 	Randao common.Hash `json:"randao,string"`
 }
 
-type BeaconBlock capella.BeaconBlock
+type BeaconBlock deneb.BeaconBlock
 
 type BeaconBlockHeader struct {
 	Slot          uint64 `json:"slot,string"`
@@ -72,7 +71,7 @@ type BeaconBlockHeader struct {
 	BodyRoot      string `json:"body_root" ssz-size:"32"`
 }
 
-type SignedBeaconBlock capella.SignedBeaconBlock
+type SignedBeaconBlock deneb.SignedBeaconBlock
 
 type Withdrawal struct {
 	Index          uint64 `json:"index,string"`

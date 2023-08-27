@@ -6,7 +6,7 @@ import (
 	"math/big"
 	"time"
 
-	capella "github.com/attestantio/go-eth2-client/spec/capella"
+	deneb "github.com/attestantio/go-eth2-client/spec/deneb"
 	bundleTypes "github.com/bsn-eng/pon-golang-types/bundles"
 	commonTypes "github.com/bsn-eng/pon-golang-types/common"
 	rpbsTypes "github.com/bsn-eng/pon-golang-types/rpbs"
@@ -120,7 +120,7 @@ type BidPayload struct {
 	GasUsed              uint64                `json:"gas_used,string"`
 	Value                *big.Int              `json:"value"`
 
-	ExecutionPayloadHeader *capella.ExecutionPayloadHeader `json:"execution_payload_header"`
+	ExecutionPayloadHeader *deneb.ExecutionPayloadHeader `json:"execution_payload_header"`
 	Endpoint               string                          `json:"endpoint"`
 	BuilderWalletAddress   commonTypes.Address             `json:"builder_wallet_address"`
 	PayoutPoolTransaction  []byte                          `json:"payout_pool_transaction"`

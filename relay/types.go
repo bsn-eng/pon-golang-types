@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"sync"
 
-	"github.com/attestantio/go-eth2-client/spec/capella"
+	"github.com/attestantio/go-eth2-client/spec/deneb"
 	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 
@@ -61,7 +61,7 @@ type BidTrace struct {
 	GasUsed              uint64    `json:"gas_used,string"`
 	Value                uint64    `json:"value" ssz-size:"32"`
 
-	ExecutionPayloadHeader *capella.ExecutionPayloadHeader `json:"execution_payload_header"`
+	ExecutionPayloadHeader *deneb.ExecutionPayloadHeader `json:"execution_payload_header"`
 	Endpoint               string                          `json:"endpoint"`
 	BuilderWalletAddress   Address                         `json:"builder_wallet_address"`
 	PayoutPoolTransaction  Transaction                     `json:"payout_pool_transaction"`
