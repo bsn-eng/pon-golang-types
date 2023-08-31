@@ -4,11 +4,9 @@ import (
 	"encoding/json"
 	"sync"
 
-	"github.com/attestantio/go-eth2-client/spec/deneb"
 	"github.com/attestantio/go-eth2-client/spec/phase0"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 
-	rpbsTypes "github.com/bsn-eng/pon-golang-types/rpbs"
 )
 
 type Address [20]byte
@@ -42,31 +40,6 @@ func (e Address) String() string {
 func (t Transaction) String() string {
 	transaction, _ := json.Marshal(t)
 	return string(transaction)
-}
-
-type BuilderSubmitBlockRequest struct {
-	Signature      Signature      `json:"signature" ssz-size:"96"`
-	Message        *BidTrace      `json:"message"`
-	EcdsaSignature EcdsaSignature `json:"ecdsa_signature"`
-}
-
-type BidTrace struct {
-	Slot                 uint64    `json:"slot,string"`
-	ParentHash           Hash      `json:"parent_hash" ssz-size:"32"`
-	BlockHash            Hash      `json:"block_hash" ssz-size:"32"`
-	BuilderPubkey        BLSPubKey `json:"builder_pubkey" ssz-size:"48"`
-	ProposerPubkey       BLSPubKey `json:"proposer_pubkey" ssz-size:"48"`
-	ProposerFeeRecipient Address   `json:"proposer_fee_recipient" ssz-size:"20"`
-	GasLimit             uint64    `json:"gas_limit,string"`
-	GasUsed              uint64    `json:"gas_used,string"`
-	Value                uint64    `json:"value" ssz-size:"32"`
-
-	ExecutionPayloadHeader *deneb.ExecutionPayloadHeader `json:"execution_payload_header"`
-	Endpoint               string                          `json:"endpoint"`
-	BuilderWalletAddress   Address                         `json:"builder_wallet_address"`
-	PayoutPoolTransaction  Transaction                     `json:"payout_pool_transaction"`
-	RPBS                   *rpbsTypes.EncodedRPBSSignature `json:"rpbs"`
-	RPBSPubkey             string                          `json:"rpbs_pubkey"`
 }
 
 type ValidatorIndexes struct {
