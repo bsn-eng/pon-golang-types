@@ -1,7 +1,6 @@
 package common
 
 import (
-	"errors"
 
 	"github.com/attestantio/go-eth2-client/spec/bellatrix"
 	capella "github.com/attestantio/go-eth2-client/spec/capella"
@@ -20,7 +19,7 @@ func ComputeWithdrawalsRoot(w []*capella.Withdrawal) (phase0.Root, error) {
 		emptyRoot := phase0.Root{}
 		emptyHash := common.HexToHash(EmptyWithdrawalMerkleRoot)
 		copy(emptyRoot[:], emptyHash.Bytes()[:])
-		return emptyRoot, errors.New("no withdrawals supplied")
+		return emptyRoot, nil
 	}
 	withdrawals := utilcapella.ExecutionPayloadWithdrawals{Withdrawals: w}
 	return withdrawals.HashTreeRoot()
