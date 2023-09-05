@@ -129,7 +129,7 @@ func (b *VersionedBlindedBeaconBlock) ToBaseBlindedBeaconBlock() (BaseBlindedBea
 	case b.Bellatrix != nil:
 
 		baseFeePerGasBigInt := big.NewInt(0)
-		baseFeePerGasBigInt.SetBytes(b.Capella.Body.ExecutionPayloadHeader.BaseFeePerGas[:])
+		baseFeePerGasBigInt.SetBytes(b.Bellatrix.Body.ExecutionPayloadHeader.BaseFeePerGas[:])
 		baseFeePerGas, overflow := uint256.FromBig(baseFeePerGasBigInt)
 		if overflow {
 			return res, errors.New("baseFeePerGas overflow")

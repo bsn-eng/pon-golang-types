@@ -157,7 +157,7 @@ func (v *VersionedExecutionPayloadHeader) ToBaseExecutionPayloadHeader() (BaseEx
 
 	case v.Bellatrix != nil:
 		baseFeePerGasBigInt := big.NewInt(0)
-		baseFeePerGasBigInt.SetBytes(v.Capella.BaseFeePerGas[:])
+		baseFeePerGasBigInt.SetBytes(v.Bellatrix.BaseFeePerGas[:])
 		baseFeePerGas, overflow := uint256.FromBig(baseFeePerGasBigInt)
 		if overflow {
 			return res, errors.New("baseFeePerGas overflow")
