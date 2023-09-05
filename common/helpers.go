@@ -1,7 +1,6 @@
 package common
 
 import (
-	"errors"
 
 	"github.com/attestantio/go-eth2-client/spec/bellatrix"
 	capella "github.com/attestantio/go-eth2-client/spec/capella"
