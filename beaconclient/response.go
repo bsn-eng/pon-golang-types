@@ -24,10 +24,6 @@ type GetRandaoResponse struct {
 	Data *RandaoData `json:"data"`
 }
 
-type GetBlockResponse struct {
-	Data *SignedBeaconBlock `json:"data"`
-}
-
 type GetBlockHeaderResponse struct {
 	Data *BlockHeaderData `json:"data"`
 }
