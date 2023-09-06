@@ -29,6 +29,9 @@ type GetRandaoResponse struct {
 }
 
 type GetBlockResponse struct {
+	Version string `json:"version"`
+	ExecutionOptimistic bool `json:"execution_optimistic"`
+	Finalized bool `json:"finalized"`
 	Data *common.VersionedSignedBeaconBlock `json:"data"`
 }
 
