@@ -1,5 +1,9 @@
 package beaconclient
 
+import (
+	"github.com/bsn-eng/pon-golang-types/common"
+)
+
 type GetGenesisResponse struct {
 	Data *GenesisData `json:"data"`
 }
@@ -22,6 +26,10 @@ type GetProposerDutiesResponse struct {
 
 type GetRandaoResponse struct {
 	Data *RandaoData `json:"data"`
+}
+
+type GetBlockResponse struct {
+	Data *common.VersionedSignedBeaconBlock `json:"data"`
 }
 
 type GetBlockHeaderResponse struct {
