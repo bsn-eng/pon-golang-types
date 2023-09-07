@@ -251,7 +251,7 @@ func (b *VersionedBlindedBeaconBlock) ToBaseBlindedBeaconBlock() (BaseBlindedBea
 
 }
 
-// Converts the VersionedBeaconBlock to a VersionedBeaconBlock without the transactions and withdrawals as those cannot be derived
+// Converts the VersionedBlindedBeaconBlock to a VersionedBeaconBlock without the transactions and withdrawals as those cannot be derived
 func (b *VersionedBlindedBeaconBlock) ToVersionedBeaconBlock() (VersionedBeaconBlock, error) {
 	res := VersionedBeaconBlock{}
 
@@ -317,4 +317,17 @@ func (b *VersionedBlindedBeaconBlock) ToVersionedBeaconBlock() (VersionedBeaconB
 	}
 
 	return res, nil
+}
+
+func (b *VersionedBlindedBeaconBlock) Version() (string, error) {
+	switch {
+	case b.Bellatrix != nil:
+		return "bellatrix", nil
+	case b.Capella != nil:
+		return "capella", nil
+	case b.Deneb != nil:
+		return "deneb", nil
+	default:
+		return "", errors.New("no fork version set")
+	}
 }

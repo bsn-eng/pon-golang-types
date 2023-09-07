@@ -231,3 +231,16 @@ func (v *VersionedExecutionPayloadHeader) ToVersionedExecutionPayload() (Version
 
 	return res, nil
 }
+
+func (v *VersionedExecutionPayloadHeader) Version() (string, error) {
+	switch {
+	case v.Bellatrix != nil:
+		return "bellatrix", nil
+	case v.Capella != nil:
+		return "capella", nil
+	case v.Deneb != nil:
+		return "deneb", nil
+	default:
+		return "", errors.New("no fork version set")
+	}
+}
