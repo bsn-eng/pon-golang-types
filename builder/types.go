@@ -6,6 +6,7 @@ import (
 	"math/big"
 	"time"
 
+	"github.com/attestantio/go-eth2-client/spec/phase0"
 	bundleTypes "github.com/bsn-eng/pon-golang-types/bundles"
 	commonTypes "github.com/bsn-eng/pon-golang-types/common"
 	rpbsTypes "github.com/bsn-eng/pon-golang-types/rpbs"
@@ -98,6 +99,11 @@ type BuilderBlockBid struct {
 	Signature      commonTypes.Signature      `json:"signature" ssz-size:"96"`
 	Message        *BidPayload                `json:"message"`
 	EcdsaSignature commonTypes.EcdsaSignature `json:"ecdsa_signature"`
+}
+
+type SignedBuilderBlockBid struct {
+	Message   *BuilderBlockBid `json:"message"`
+	Signature phase0.BLSSignature `ssz-size:"96"`
 }
 
 type BlockBidResponse struct {
