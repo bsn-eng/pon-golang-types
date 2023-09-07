@@ -326,3 +326,16 @@ func (b *VersionedBeaconBlock) ToVersionedBlindedBeaconBlock() (VersionedBlinded
 
 	return res, nil
 }
+
+func (b *VersionedBeaconBlock) Version() (string, error) {
+	switch {
+	case b.Bellatrix != nil:
+		return "bellatrix", nil
+	case b.Capella != nil:
+		return "capella", nil
+	case b.Deneb != nil:
+		return "deneb", nil
+	default:
+		return "", errors.New("no fork version set")
+	}
+}

@@ -187,3 +187,16 @@ func (b *VersionedSignedBeaconBlock) ToBaseSignedBeaconBlock() (BaseSignedBeacon
 
 	return res, nil
 }
+
+func (b *VersionedSignedBeaconBlock) Version() (string, error) {
+	switch {
+	case b.Bellatrix != nil:
+		return "bellatrix", nil
+	case b.Capella != nil:
+		return "capella", nil
+	case b.Deneb != nil:
+		return "deneb", nil
+	default:
+		return "", errors.New("no fork version set")
+	}
+}
