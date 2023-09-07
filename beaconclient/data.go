@@ -1,7 +1,6 @@
 package beaconclient
 
 import (
-	"github.com/attestantio/go-eth2-client/spec/deneb"
 	"github.com/ethereum/go-ethereum/common"
 )
 
@@ -61,8 +60,6 @@ type RandaoData struct {
 	Randao common.Hash `json:"randao,string"`
 }
 
-type BeaconBlock deneb.BeaconBlock
-
 type BeaconBlockHeader struct {
 	Slot          uint64 `json:"slot,string"`
 	ProposerIndex uint64 `json:"proposer_index,string"`
@@ -70,8 +67,6 @@ type BeaconBlockHeader struct {
 	StateRoot     string `json:"state_root" ssz-size:"32"`
 	BodyRoot      string `json:"body_root" ssz-size:"32"`
 }
-
-type SignedBeaconBlock deneb.SignedBeaconBlock
 
 type Withdrawal struct {
 	Index          uint64 `json:"index,string"`
