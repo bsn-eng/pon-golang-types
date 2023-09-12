@@ -14,7 +14,7 @@ func (b *BuilderBlockBid) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 	indx := hh.Index()
 
 	// Field (1) 'ProposerPubkey'
-	hh.PutBytes(b.ProposerPubkey[:])
+	hh.PutBytes(b.Pubkey[:])
 
 	// Field (2) 'Value'
 	hh.PutBytes(b.Value.Bytes())
