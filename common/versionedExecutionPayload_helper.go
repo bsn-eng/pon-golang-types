@@ -2,6 +2,7 @@ package common
 
 import (
 	"errors"
+	"fmt"
 	"math/big"
 
 	bellatrix "github.com/attestantio/go-eth2-client/spec/bellatrix"
@@ -42,6 +43,12 @@ func ConstructExecutionPayload(
 
 	switch forkVersion {
 	case "bellatrix":
+		fmt.Println("Original executionPayload baseFeePerGas: ", executionPayload.BaseFeePerGas)
+		paddedBytes := executionPayload.BaseFeePerGas.PaddedBytes(32)
+		fmt.Println("Original executionPayload baseFeePerGas padded bytes: ", paddedBytes)
+		fmt.Println("Original executionPayload baseFeePerGas padded bytes wrapped:", [32]byte(paddedBytes))
+		fmt.Println("padded length: ", len(paddedBytes))
+		fmt.Println("wrapped length: ", len([32]byte(paddedBytes)))
 		res.Bellatrix = &bellatrix.ExecutionPayload{
 			ParentHash: executionPayload.ParentHash,
 			FeeRecipient: executionPayload.FeeRecipient,
@@ -59,6 +66,12 @@ func ConstructExecutionPayload(
 		}
 	
 	case "capella":
+		fmt.Println("Original executionPayload baseFeePerGas: ", executionPayload.BaseFeePerGas)
+		paddedBytes := executionPayload.BaseFeePerGas.PaddedBytes(32)
+		fmt.Println("Original executionPayload baseFeePerGas padded bytes: ", paddedBytes)
+		fmt.Println("Original executionPayload baseFeePerGas padded bytes wrapped:", [32]byte(paddedBytes))
+		fmt.Println("padded length: ", len(paddedBytes))
+		fmt.Println("wrapped length: ", len([32]byte(paddedBytes)))
 		res.Capella = &capella.ExecutionPayload{
 			ParentHash: executionPayload.ParentHash,
 			FeeRecipient: executionPayload.FeeRecipient,
