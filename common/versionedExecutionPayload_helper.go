@@ -54,8 +54,7 @@ func ConstructExecutionPayload(
 			GasUsed: executionPayload.GasUsed,
 			Timestamp: executionPayload.Timestamp,
 			ExtraData: executionPayload.ExtraData,
-			BaseFeePerGas: executionPayload.BaseFeePerGas.Bytes32(),
-			BlockHash: executionPayload.BlockHash,
+			BaseFeePerGas: [32]byte(executionPayload.BaseFeePerGas.PaddedBytes(32)),
 			Transactions: executionPayload.Transactions,
 		}
 	
@@ -72,7 +71,7 @@ func ConstructExecutionPayload(
 			GasUsed: executionPayload.GasUsed,
 			Timestamp: executionPayload.Timestamp,
 			ExtraData: executionPayload.ExtraData,
-			BaseFeePerGas: executionPayload.BaseFeePerGas.Bytes32(),
+			BaseFeePerGas: [32]byte(executionPayload.BaseFeePerGas.PaddedBytes(32)),
 			BlockHash: executionPayload.BlockHash,
 			Transactions: executionPayload.Transactions,
 			Withdrawals: executionPayload.Withdrawals,

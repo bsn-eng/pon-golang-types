@@ -57,7 +57,7 @@ type SignedBuilderBlockBid struct {
 }
 
 // BuilderBlockBid is a BuilderBlockBid similar to builder.BuilderBlockBid
-// This is just leaner with only necessary feilds passed to valiator proxy software
+// This is just leaner with only necessary fields passed to valiator proxy software
 type BuilderBlockBid struct {
 	Pubkey phase0.BLSPubKey `json:"pubkey" ssz-size:"48"`
 	// json feild name has been changed from proposer_pubkey to pubkey for mevBoost
