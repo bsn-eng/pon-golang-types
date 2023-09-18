@@ -44,6 +44,13 @@ func ConstructExecutionPayloadHeader(
 
 	switch forkVersion {
 	case "bellatrix":
+
+		baseFeePerGas := [32]byte(executionPayloadHeader.BaseFeePerGas.PaddedBytes(32))
+		baseFeePerGasLE := [32]byte{}
+		for i := 0; i < len(baseFeePerGas); i++ {
+			baseFeePerGasLE[i] = baseFeePerGas[len(baseFeePerGas)-1-i]
+		}
+
 		res.Bellatrix = &bellatrix.ExecutionPayloadHeader{
 			ParentHash: executionPayloadHeader.ParentHash,
 			FeeRecipient: executionPayloadHeader.FeeRecipient,
@@ -56,12 +63,19 @@ func ConstructExecutionPayloadHeader(
 			GasUsed: executionPayloadHeader.GasUsed,
 			Timestamp: executionPayloadHeader.Timestamp,
 			ExtraData: executionPayloadHeader.ExtraData,
-			BaseFeePerGas: [32]byte(executionPayloadHeader.BaseFeePerGas.PaddedBytes(32)),
+			BaseFeePerGas: baseFeePerGasLE,
 			BlockHash: executionPayloadHeader.BlockHash,
 			TransactionsRoot: executionPayloadHeader.TransactionsRoot,
 		}
 	
 	case "capella":
+
+		baseFeePerGas := [32]byte(executionPayloadHeader.BaseFeePerGas.PaddedBytes(32))
+		baseFeePerGasLE := [32]byte{}
+		for i := 0; i < len(baseFeePerGas); i++ {
+			baseFeePerGasLE[i] = baseFeePerGas[len(baseFeePerGas)-1-i]
+		}
+
 		res.Capella = &capella.ExecutionPayloadHeader{
 			ParentHash: executionPayloadHeader.ParentHash,
 			FeeRecipient: executionPayloadHeader.FeeRecipient,
@@ -74,7 +88,7 @@ func ConstructExecutionPayloadHeader(
 			GasUsed: executionPayloadHeader.GasUsed,
 			Timestamp: executionPayloadHeader.Timestamp,
 			ExtraData: executionPayloadHeader.ExtraData,
-			BaseFeePerGas: [32]byte(executionPayloadHeader.BaseFeePerGas.PaddedBytes(32)),
+			BaseFeePerGas: baseFeePerGasLE,
 			BlockHash: executionPayloadHeader.BlockHash,
 			TransactionsRoot: executionPayloadHeader.TransactionsRoot,
 			WithdrawalsRoot: executionPayloadHeader.WithdrawalsRoot,
@@ -134,7 +148,11 @@ func (v *VersionedExecutionPayloadHeader) ToBaseExecutionPayloadHeader() (BaseEx
 
 	case v.Capella != nil:
 		baseFeePerGasBigInt := big.NewInt(0)
-		baseFeePerGasBigInt.SetBytes(v.Capella.BaseFeePerGas[:])
+		baseFeePerGasBE := [32]byte{}
+		for i := 0; i < len(v.Capella.BaseFeePerGas); i++ {
+			baseFeePerGasBE[i] = v.Capella.BaseFeePerGas[len(v.Capella.BaseFeePerGas)-1-i]
+		}
+		baseFeePerGasBigInt.SetBytes(baseFeePerGasBE[:])
 		baseFeePerGas, overflow := uint256.FromBig(baseFeePerGasBigInt)
 		if overflow {
 			return res, errors.New("baseFeePerGas overflow")
@@ -157,7 +175,11 @@ func (v *VersionedExecutionPayloadHeader) ToBaseExecutionPayloadHeader() (BaseEx
 
 	case v.Bellatrix != nil:
 		baseFeePerGasBigInt := big.NewInt(0)
-		baseFeePerGasBigInt.SetBytes(v.Bellatrix.BaseFeePerGas[:])
+		baseFeePerGasBE := [32]byte{}
+		for i := 0; i < len(v.Capella.BaseFeePerGas); i++ {
+			baseFeePerGasBE[i] = v.Capella.BaseFeePerGas[len(v.Capella.BaseFeePerGas)-1-i]
+		}
+		baseFeePerGasBigInt.SetBytes(baseFeePerGasBE[:])
 		baseFeePerGas, overflow := uint256.FromBig(baseFeePerGasBigInt)
 		if overflow {
 			return res, errors.New("baseFeePerGas overflow")
