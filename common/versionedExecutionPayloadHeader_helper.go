@@ -176,8 +176,8 @@ func (v *VersionedExecutionPayloadHeader) ToBaseExecutionPayloadHeader() (BaseEx
 	case v.Bellatrix != nil:
 		baseFeePerGasBigInt := big.NewInt(0)
 		baseFeePerGasBE := [32]byte{}
-		for i := 0; i < len(v.Capella.BaseFeePerGas); i++ {
-			baseFeePerGasBE[i] = v.Capella.BaseFeePerGas[len(v.Capella.BaseFeePerGas)-1-i]
+		for i := 0; i < len(v.Bellatrix.BaseFeePerGas); i++ {
+			baseFeePerGasBE[i] = v.Bellatrix.BaseFeePerGas[len(v.Bellatrix.BaseFeePerGas)-1-i]
 		}
 		baseFeePerGasBigInt.SetBytes(baseFeePerGasBE[:])
 		baseFeePerGas, overflow := uint256.FromBig(baseFeePerGasBigInt)
