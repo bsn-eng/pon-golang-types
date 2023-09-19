@@ -6,6 +6,14 @@ type Builder struct {
 	BalanceStaked string `db:"balance_staked" json:"balanceStaked"`
 }
 
+type BuilderStake struct {
+	Data struct {
+		GlobalValue struct {
+			BalanceRequired string `json:"builderMinimumStake"`
+		} `json:"globalValue"`
+	} `json:"data"`
+}
+
 type BuilderPool struct {
 	Data struct {
 		Builders []Builder `json:"builders"`
