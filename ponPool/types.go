@@ -3,6 +3,7 @@ package ponpool
 type Builder struct {
 	BuilderPubkey string `db:"builder_pubkey" json:"id"`
 	Status        string `db:"status" json:"status"`
+	BalanceStaked string `db:"balance_staked" json:"balanceStaked"`
 }
 
 type BuilderPool struct {
