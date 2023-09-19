@@ -125,7 +125,11 @@ func (b *VersionedBeaconBlock) ToBaseBeaconBlock() (BaseBeaconBlock, error) {
 	case b.Bellatrix != nil:
 
 		baseFeePerGasBigInt := big.NewInt(0)
-		baseFeePerGasBigInt.SetBytes(b.Bellatrix.Body.ExecutionPayload.BaseFeePerGas[:])
+		baseFeePerGasBE := [32]byte{}
+		for i := 0; i < len(b.Bellatrix.Body.ExecutionPayload.BaseFeePerGas); i++ {
+			baseFeePerGasBE[i] = b.Bellatrix.Body.ExecutionPayload.BaseFeePerGas[len(b.Bellatrix.Body.ExecutionPayload.BaseFeePerGas)-1-i]
+		}
+		baseFeePerGasBigInt.SetBytes(baseFeePerGasBE[:])
 		baseFeePerGas, overflow := uint256.FromBig(baseFeePerGasBigInt)
 		if overflow {
 			return res, errors.New("baseFeePerGas overflow")
@@ -166,7 +170,11 @@ func (b *VersionedBeaconBlock) ToBaseBeaconBlock() (BaseBeaconBlock, error) {
 	case b.Capella != nil:
 
 		baseFeePerGasBigInt := big.NewInt(0)
-		baseFeePerGasBigInt.SetBytes(b.Capella.Body.ExecutionPayload.BaseFeePerGas[:])
+		baseFeePerGasBE := [32]byte{}
+		for i := 0; i < len(b.Capella.Body.ExecutionPayload.BaseFeePerGas); i++ {
+			baseFeePerGasBE[i] = b.Capella.Body.ExecutionPayload.BaseFeePerGas[len(b.Capella.Body.ExecutionPayload.BaseFeePerGas)-1-i]
+		}
+		baseFeePerGasBigInt.SetBytes(baseFeePerGasBE[:])
 		baseFeePerGas, overflow := uint256.FromBig(baseFeePerGasBigInt)
 		if overflow {
 			return res, errors.New("baseFeePerGas overflow")

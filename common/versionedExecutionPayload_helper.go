@@ -2,7 +2,6 @@ package common
 
 import (
 	"errors"
-	"fmt"
 	"math/big"
 
 	bellatrix "github.com/attestantio/go-eth2-client/spec/bellatrix"
@@ -43,12 +42,13 @@ func ConstructExecutionPayload(
 
 	switch forkVersion {
 	case "bellatrix":
-		fmt.Println("Original executionPayload baseFeePerGas: ", executionPayload.BaseFeePerGas)
-		paddedBytes := executionPayload.BaseFeePerGas.PaddedBytes(32)
-		fmt.Println("Original executionPayload baseFeePerGas padded bytes: ", paddedBytes)
-		fmt.Println("Original executionPayload baseFeePerGas padded bytes wrapped:", [32]byte(paddedBytes))
-		fmt.Println("padded length: ", len(paddedBytes))
-		fmt.Println("wrapped length: ", len([32]byte(paddedBytes)))
+		
+		baseFeePerGas := [32]byte(executionPayload.BaseFeePerGas.PaddedBytes(32))
+		baseFeePerGasLE := [32]byte{}
+		for i := 0; i < len(baseFeePerGas); i++ {
+			baseFeePerGasLE[i] = baseFeePerGas[len(baseFeePerGas)-1-i]
+		}
+
 		res.Bellatrix = &bellatrix.ExecutionPayload{
 			ParentHash: executionPayload.ParentHash,
 			FeeRecipient: executionPayload.FeeRecipient,
@@ -61,17 +61,18 @@ func ConstructExecutionPayload(
 			GasUsed: executionPayload.GasUsed,
 			Timestamp: executionPayload.Timestamp,
 			ExtraData: executionPayload.ExtraData,
-			BaseFeePerGas: [32]byte(executionPayload.BaseFeePerGas.PaddedBytes(32)),
+			BaseFeePerGas: baseFeePerGasLE,
 			Transactions: executionPayload.Transactions,
 		}
 	
 	case "capella":
-		fmt.Println("Original executionPayload baseFeePerGas: ", executionPayload.BaseFeePerGas)
-		paddedBytes := executionPayload.BaseFeePerGas.PaddedBytes(32)
-		fmt.Println("Original executionPayload baseFeePerGas padded bytes: ", paddedBytes)
-		fmt.Println("Original executionPayload baseFeePerGas padded bytes wrapped:", [32]byte(paddedBytes))
-		fmt.Println("padded length: ", len(paddedBytes))
-		fmt.Println("wrapped length: ", len([32]byte(paddedBytes)))
+
+		baseFeePerGas := [32]byte(executionPayload.BaseFeePerGas.PaddedBytes(32))
+		baseFeePerGasLE := [32]byte{}
+		for i := 0; i < len(baseFeePerGas); i++ {
+			baseFeePerGasLE[i] = baseFeePerGas[len(baseFeePerGas)-1-i]
+		}
+
 		res.Capella = &capella.ExecutionPayload{
 			ParentHash: executionPayload.ParentHash,
 			FeeRecipient: executionPayload.FeeRecipient,
@@ -84,7 +85,7 @@ func ConstructExecutionPayload(
 			GasUsed: executionPayload.GasUsed,
 			Timestamp: executionPayload.Timestamp,
 			ExtraData: executionPayload.ExtraData,
-			BaseFeePerGas: [32]byte(executionPayload.BaseFeePerGas.PaddedBytes(32)),
+			BaseFeePerGas: baseFeePerGasLE,
 			BlockHash: executionPayload.BlockHash,
 			Transactions: executionPayload.Transactions,
 			Withdrawals: executionPayload.Withdrawals,
@@ -145,7 +146,11 @@ func (v *VersionedExecutionPayload) ToBaseExecutionPayload() (BaseExecutionPaylo
 
 	case v.Capella != nil :
 		baseFeePerGasBigInt := big.NewInt(0)
-		baseFeePerGasBigInt.SetBytes(v.Capella.BaseFeePerGas[:])
+		baseFeePerGasBE := [32]byte{}
+		for i := 0; i < len(v.Capella.BaseFeePerGas); i++ {
+			baseFeePerGasBE[i] = v.Capella.BaseFeePerGas[len(v.Capella.BaseFeePerGas)-1-i]
+		}
+		baseFeePerGasBigInt.SetBytes(baseFeePerGasBE[:])
 		baseFeePerGas, overflow := uint256.FromBig(baseFeePerGasBigInt)
 		if overflow {
 			return res, errors.New("baseFeePerGas overflow")
@@ -168,7 +173,11 @@ func (v *VersionedExecutionPayload) ToBaseExecutionPayload() (BaseExecutionPaylo
 
 	case v.Bellatrix != nil :
 		baseFeePerGasBigInt := big.NewInt(0)
-		baseFeePerGasBigInt.SetBytes(v.Bellatrix.BaseFeePerGas[:])
+		baseFeePerGasBE := [32]byte{}
+		for i := 0; i < len(v.Bellatrix.BaseFeePerGas); i++ {
+			baseFeePerGasBE[i] = v.Bellatrix.BaseFeePerGas[len(v.Bellatrix.BaseFeePerGas)-1-i]
+		}
+		baseFeePerGasBigInt.SetBytes(baseFeePerGasBE[:])
 		baseFeePerGas, overflow := uint256.FromBig(baseFeePerGasBigInt)
 		if overflow {
 			return res, errors.New("baseFeePerGas overflow")
