@@ -14,6 +14,11 @@ type BuilderStake struct {
 	} `json:"data"`
 }
 
+type BuilderInterface struct {
+	Builder Builder
+	Status  bool
+}
+
 type BuilderPool struct {
 	Data struct {
 		Builders []Builder `json:"builders"`
