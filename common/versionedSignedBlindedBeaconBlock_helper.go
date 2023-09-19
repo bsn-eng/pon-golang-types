@@ -59,7 +59,11 @@ func (b *VersionedSignedBlindedBeaconBlock) ToBaseSignedBlindedBeaconBlock() (Ba
 	switch {
 	case b.Bellatrix != nil:
 		baseFeePerGasBigInt := big.NewInt(0)
-		baseFeePerGasBigInt.SetBytes(b.Bellatrix.Message.Body.ExecutionPayloadHeader.BaseFeePerGas[:])
+		baseFeePerGasBE := [32]byte{}
+		for i := 0; i < len(b.Bellatrix.Message.Body.ExecutionPayloadHeader.BaseFeePerGas); i++ {
+			baseFeePerGasBE[i] = b.Bellatrix.Message.Body.ExecutionPayloadHeader.BaseFeePerGas[len(b.Bellatrix.Message.Body.ExecutionPayloadHeader.BaseFeePerGas)-1-i]
+		}
+		baseFeePerGasBigInt.SetBytes(baseFeePerGasBE[:])
 		baseFeePerGas, overflow := uint256.FromBig(baseFeePerGasBigInt)
 		if overflow {
 			return res, errors.New("baseFeePerGas overflow")
@@ -100,7 +104,11 @@ func (b *VersionedSignedBlindedBeaconBlock) ToBaseSignedBlindedBeaconBlock() (Ba
 		res.Signature = b.Bellatrix.Signature
 	case b.Capella != nil:
 		baseFeePerGasBigInt := big.NewInt(0)
-		baseFeePerGasBigInt.SetBytes(b.Capella.Message.Body.ExecutionPayloadHeader.BaseFeePerGas[:])
+		baseFeePerGasBE := [32]byte{}
+		for i := 0; i < len(b.Capella.Message.Body.ExecutionPayloadHeader.BaseFeePerGas); i++ {
+			baseFeePerGasBE[i] = b.Capella.Message.Body.ExecutionPayloadHeader.BaseFeePerGas[len(b.Capella.Message.Body.ExecutionPayloadHeader.BaseFeePerGas)-1-i]
+		}
+		baseFeePerGasBigInt.SetBytes(baseFeePerGasBE[:])
 		baseFeePerGas, overflow := uint256.FromBig(baseFeePerGasBigInt)
 		if overflow {
 			return res, errors.New("baseFeePerGas overflow")
