@@ -61,7 +61,7 @@ type SignedBuilderBlockBid struct {
 // This is just leaner with only necessary fields passed to valiator proxy software
 type BuilderBlockBid struct {
 	Pubkey phase0.BLSPubKey `json:"pubkey" ssz-size:"48"`
-	// json feild name has been changed from proposer_pubkey to pubkey for mevBoost
+	// json feild name is pubkey for mevBoost
 
 	Value *big.Int `json:"value"`
 
