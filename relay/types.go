@@ -67,3 +67,17 @@ type BuilderBlockBid struct {
 	ExecutionPayloadHeader *commonTypes.VersionedExecutionPayloadHeader `json:"header"`
 	// json feild name has been changed from execution_payload_header to header for mevBoost
 }
+
+type builderBlockBidJSON struct {
+	ProposerPubkey string `json:"pubkey" ssz-size:"48"`
+	Value          string `json:"value"`
+	ExecutionPayloadHeader *commonTypes.VersionedExecutionPayloadHeader `json:"header"`
+}
+
+func (b *BuilderBlockBid) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&builderBlockBidJSON{
+		ProposerPubkey: b.ProposerPubkey.String(),
+		Value:          b.Value.String(),
+		ExecutionPayloadHeader: b.ExecutionPayloadHeader,
+	})
+}
