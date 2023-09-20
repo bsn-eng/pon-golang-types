@@ -17,7 +17,11 @@ func (b *BuilderBlockBid) HashTreeRootWith(hh ssz.HashWalker) (err error) {
 	hh.PutBytes(b.Pubkey[:])
 
 	// Field (2) 'Value'
-	hh.PutBytes(b.Value.Bytes())
+	valueBytes := b.Value.Bytes() // Big endian
+	for i, j := 0, len(valueBytes)-1; i < j; i, j = i+1, j-1 {
+		valueBytes[i], valueBytes[j] = valueBytes[j], valueBytes[i]
+	} // Little endian
+	hh.PutBytes(valueBytes)
 
 	// Field (3) 'ExecutionPayloadHeader'
 	headerRoot, err := b.ExecutionPayloadHeader.HashTreeRoot()
