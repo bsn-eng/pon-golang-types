@@ -16,6 +16,16 @@ type VersionedSignedBlindedBeaconBlock struct {
 	Deneb     *deneb.SignedBlindedBeaconBlock     `json:"deneb,omitempty"`
 }
 
+type VersionedSignedBlindedBeaconBlockWithVersionNumber struct {
+	VersionNumber uint64 `json:"version,string"`
+	VersionedSignedBlindedBeaconBlock *VersionedSignedBlindedBeaconBlock `json:"data"`
+}
+
+type VersionedSignedBlindedBeaconBlockWithVersionName struct {
+	VersionName string `json:"version"`
+	VersionedSignedBlindedBeaconBlock *VersionedSignedBlindedBeaconBlock `json:"data"`
+}
+
 func (v *VersionedSignedBlindedBeaconBlock) GetTree() (*ssz.Node, error) {
 	if v.Deneb != nil {
 		return v.Deneb.GetTree()

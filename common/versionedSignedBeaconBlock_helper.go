@@ -4,6 +4,8 @@ import (
 	"errors"
 	"math/big"
 
+	"github.com/attestantio/go-eth2-client/spec"
+
 	bellatrix "github.com/attestantio/go-eth2-client/spec/bellatrix"
 	capella "github.com/attestantio/go-eth2-client/spec/capella"
 	deneb "github.com/attestantio/go-eth2-client/spec/deneb"
@@ -31,17 +33,17 @@ func ConstructSignedBeaconBlock(
 	}
 
 	switch forkVersion {
-	case "bellatrix":
+	case spec.DataVersionBellatrix.String():
 		res.Bellatrix = &bellatrix.SignedBeaconBlock{
 			Message:   VersionedBeaconBlock.Bellatrix,
 			Signature: signedBeaconBlock.Signature,
 		}
-	case "capella":
+	case spec.DataVersionCapella.String():
 		res.Capella = &capella.SignedBeaconBlock{
 			Message:   VersionedBeaconBlock.Capella,
 			Signature: signedBeaconBlock.Signature,
 		}
-	case "deneb":
+	case spec.DataVersionDeneb.String():
 		res.Deneb = &deneb.SignedBeaconBlock{
 			Message:   VersionedBeaconBlock.Deneb,
 			Signature: signedBeaconBlock.Signature,
@@ -73,7 +75,7 @@ func (b *VersionedSignedBeaconBlock) ToBaseSignedBeaconBlock() (BaseSignedBeacon
 			ProposerIndex: b.Bellatrix.Message.ProposerIndex,
 			ParentRoot:    b.Bellatrix.Message.ParentRoot,
 			StateRoot:     b.Bellatrix.Message.StateRoot,
-			Body:          &BaseBeaconBlockBody{
+			Body: &BaseBeaconBlockBody{
 				RANDAOReveal:      b.Bellatrix.Message.Body.RANDAOReveal,
 				ETH1Data:          b.Bellatrix.Message.Body.ETH1Data,
 				Graffiti:          b.Bellatrix.Message.Body.Graffiti,
@@ -119,7 +121,7 @@ func (b *VersionedSignedBeaconBlock) ToBaseSignedBeaconBlock() (BaseSignedBeacon
 			ProposerIndex: b.Capella.Message.ProposerIndex,
 			ParentRoot:    b.Capella.Message.ParentRoot,
 			StateRoot:     b.Capella.Message.StateRoot,
-			Body:          &BaseBeaconBlockBody{
+			Body: &BaseBeaconBlockBody{
 				RANDAOReveal:      b.Capella.Message.Body.RANDAOReveal,
 				ETH1Data:          b.Capella.Message.Body.ETH1Data,
 				Graffiti:          b.Capella.Message.Body.Graffiti,
@@ -144,7 +146,7 @@ func (b *VersionedSignedBeaconBlock) ToBaseSignedBeaconBlock() (BaseSignedBeacon
 					BaseFeePerGas: baseFeePerGas,
 					BlockHash:     b.Capella.Message.Body.ExecutionPayload.BlockHash,
 					Transactions:  b.Capella.Message.Body.ExecutionPayload.Transactions,
-					Withdrawals:  b.Capella.Message.Body.ExecutionPayload.Withdrawals,
+					Withdrawals:   b.Capella.Message.Body.ExecutionPayload.Withdrawals,
 				},
 				BLSToExecutionChanges: b.Capella.Message.Body.BLSToExecutionChanges,
 			},
@@ -153,39 +155,39 @@ func (b *VersionedSignedBeaconBlock) ToBaseSignedBeaconBlock() (BaseSignedBeacon
 	case b.Deneb != nil:
 
 		res.Message = &BaseBeaconBlock{
-			Slot: 		b.Deneb.Message.Slot,
+			Slot:          b.Deneb.Message.Slot,
 			ProposerIndex: b.Deneb.Message.ProposerIndex,
-			ParentRoot: b.Deneb.Message.ParentRoot,
-			StateRoot: b.Deneb.Message.StateRoot,
+			ParentRoot:    b.Deneb.Message.ParentRoot,
+			StateRoot:     b.Deneb.Message.StateRoot,
 			Body: &BaseBeaconBlockBody{
-				RANDAOReveal: b.Deneb.Message.Body.RANDAOReveal,
-				ETH1Data: b.Deneb.Message.Body.ETH1Data,
-				Graffiti: b.Deneb.Message.Body.Graffiti,
+				RANDAOReveal:      b.Deneb.Message.Body.RANDAOReveal,
+				ETH1Data:          b.Deneb.Message.Body.ETH1Data,
+				Graffiti:          b.Deneb.Message.Body.Graffiti,
 				ProposerSlashings: b.Deneb.Message.Body.ProposerSlashings,
 				AttesterSlashings: b.Deneb.Message.Body.AttesterSlashings,
-				Attestations: b.Deneb.Message.Body.Attestations,
-				Deposits: b.Deneb.Message.Body.Deposits,
-				VoluntaryExits: b.Deneb.Message.Body.VoluntaryExits,
-				SyncAggregate: b.Deneb.Message.Body.SyncAggregate,
+				Attestations:      b.Deneb.Message.Body.Attestations,
+				Deposits:          b.Deneb.Message.Body.Deposits,
+				VoluntaryExits:    b.Deneb.Message.Body.VoluntaryExits,
+				SyncAggregate:     b.Deneb.Message.Body.SyncAggregate,
 				ExecutionPayload: &BaseExecutionPayload{
-					ParentHash: b.Deneb.Message.Body.ExecutionPayload.ParentHash,
-					FeeRecipient: b.Deneb.Message.Body.ExecutionPayload.FeeRecipient,
-					StateRoot: b.Deneb.Message.Body.ExecutionPayload.StateRoot,
-					ReceiptsRoot: b.Deneb.Message.Body.ExecutionPayload.ReceiptsRoot,
-					LogsBloom: b.Deneb.Message.Body.ExecutionPayload.LogsBloom,
-					PrevRandao: b.Deneb.Message.Body.ExecutionPayload.PrevRandao,
-					BlockNumber: b.Deneb.Message.Body.ExecutionPayload.BlockNumber,
-					GasLimit: b.Deneb.Message.Body.ExecutionPayload.GasLimit,
-					GasUsed: b.Deneb.Message.Body.ExecutionPayload.GasUsed,
-					Timestamp: b.Deneb.Message.Body.ExecutionPayload.Timestamp,
-					ExtraData: b.Deneb.Message.Body.ExecutionPayload.ExtraData,
+					ParentHash:    b.Deneb.Message.Body.ExecutionPayload.ParentHash,
+					FeeRecipient:  b.Deneb.Message.Body.ExecutionPayload.FeeRecipient,
+					StateRoot:     b.Deneb.Message.Body.ExecutionPayload.StateRoot,
+					ReceiptsRoot:  b.Deneb.Message.Body.ExecutionPayload.ReceiptsRoot,
+					LogsBloom:     b.Deneb.Message.Body.ExecutionPayload.LogsBloom,
+					PrevRandao:    b.Deneb.Message.Body.ExecutionPayload.PrevRandao,
+					BlockNumber:   b.Deneb.Message.Body.ExecutionPayload.BlockNumber,
+					GasLimit:      b.Deneb.Message.Body.ExecutionPayload.GasLimit,
+					GasUsed:       b.Deneb.Message.Body.ExecutionPayload.GasUsed,
+					Timestamp:     b.Deneb.Message.Body.ExecutionPayload.Timestamp,
+					ExtraData:     b.Deneb.Message.Body.ExecutionPayload.ExtraData,
 					BaseFeePerGas: b.Deneb.Message.Body.ExecutionPayload.BaseFeePerGas,
-					BlockHash: b.Deneb.Message.Body.ExecutionPayload.BlockHash,
-					Transactions: b.Deneb.Message.Body.ExecutionPayload.Transactions,
-					Withdrawals: b.Deneb.Message.Body.ExecutionPayload.Withdrawals,
+					BlockHash:     b.Deneb.Message.Body.ExecutionPayload.BlockHash,
+					Transactions:  b.Deneb.Message.Body.ExecutionPayload.Transactions,
+					Withdrawals:   b.Deneb.Message.Body.ExecutionPayload.Withdrawals,
 				},
 				BLSToExecutionChanges: b.Deneb.Message.Body.BLSToExecutionChanges,
-				BlobKzgCommitments: b.Deneb.Message.Body.BlobKzgCommitments,
+				BlobKzgCommitments:    b.Deneb.Message.Body.BlobKzgCommitments,
 			},
 		}
 		res.Signature = b.Deneb.Signature
@@ -199,12 +201,53 @@ func (b *VersionedSignedBeaconBlock) ToBaseSignedBeaconBlock() (BaseSignedBeacon
 func (b *VersionedSignedBeaconBlock) Version() (string, error) {
 	switch {
 	case b.Bellatrix != nil:
-		return "bellatrix", nil
+		return spec.DataVersionBellatrix.String(), nil
 	case b.Capella != nil:
-		return "capella", nil
+		return spec.DataVersionCapella.String(), nil
 	case b.Deneb != nil:
-		return "deneb", nil
+		return spec.DataVersionDeneb.String(), nil
 	default:
 		return "", errors.New("no fork version set")
 	}
+}
+
+func (b *VersionedSignedBeaconBlock) VersionNumber() (uint64, error) {
+	switch {
+	case b.Bellatrix != nil:
+		return uint64(spec.DataVersionBellatrix), nil
+	case b.Capella != nil:
+		return uint64(spec.DataVersionCapella), nil
+	case b.Deneb != nil:
+		return uint64(spec.DataVersionDeneb), nil
+	default:
+		return 0, errors.New("no fork version set")
+	}
+}
+
+func (b *VersionedSignedBeaconBlock) WithVersionNumber() (VersionedSignedBeaconBlockWithVersionNumber, error) {
+	res := VersionedSignedBeaconBlockWithVersionNumber{}
+
+	versionNumber, err := b.VersionNumber()
+	if err != nil {
+		return res, err
+	}
+
+	res.VersionNumber = versionNumber
+	res.VersionedSignedBeaconBlock = b
+
+	return res, nil
+}
+
+func (b *VersionedSignedBeaconBlock) WithVersionName() (VersionedSignedBeaconBlockWithVersionName, error) {
+	res := VersionedSignedBeaconBlockWithVersionName{}
+
+	versionName, err := b.Version()
+	if err != nil {
+		return res, err
+	}
+
+	res.VersionName = versionName
+	res.VersionedSignedBeaconBlock = b
+
+	return res, nil
 }

@@ -4,6 +4,8 @@ import (
 	"errors"
 	"math/big"
 
+	"github.com/attestantio/go-eth2-client/spec"
+
 	bellatrix "github.com/attestantio/go-eth2-client/api/v1/bellatrix"
 	capella "github.com/attestantio/go-eth2-client/api/v1/capella"
 	deneb "github.com/attestantio/go-eth2-client/api/v1/deneb"
@@ -31,17 +33,17 @@ func ConstructSignedBlindedBeaconBlock(
 	}
 
 	switch forkVersion {
-	case "bellatrix":
+	case spec.DataVersionBellatrix.String():
 		res.Bellatrix = &bellatrix.SignedBlindedBeaconBlock{
 			Message:   VersionedBlindedBeaconBlock.Bellatrix,
 			Signature: signedBlindedBeaconBlock.Signature,
 		}
-	case "capella":
+	case spec.DataVersionCapella.String():
 		res.Capella = &capella.SignedBlindedBeaconBlock{
 			Message:   VersionedBlindedBeaconBlock.Capella,
 			Signature: signedBlindedBeaconBlock.Signature,
 		}
-	case "deneb":
+	case spec.DataVersionDeneb.String():
 		res.Deneb = &deneb.SignedBlindedBeaconBlock{
 			Message:   VersionedBlindedBeaconBlock.Deneb,
 			Signature: signedBlindedBeaconBlock.Signature,
@@ -250,11 +252,11 @@ func (b *VersionedSignedBlindedBeaconBlock) ToVersionedSignedBeaconBlock() (Vers
 	var forkVersion string
 	switch {
 	case b.Bellatrix != nil:
-		forkVersion = "bellatrix"
+		forkVersion = spec.DataVersionBellatrix.String()
 	case b.Capella != nil:
-		forkVersion = "capella"
+		forkVersion = spec.DataVersionCapella.String()
 	case b.Deneb != nil:
-		forkVersion = "deneb"
+		forkVersion = spec.DataVersionDeneb.String()
 	default:
 		return res, errors.New("unsupported fork version")
 	}
@@ -270,12 +272,53 @@ func (b *VersionedSignedBlindedBeaconBlock) ToVersionedSignedBeaconBlock() (Vers
 func (b *VersionedSignedBlindedBeaconBlock) Version() (string, error) {
 	switch {
 	case b.Bellatrix != nil:
-		return "bellatrix", nil
+		return spec.DataVersionBellatrix.String(), nil
 	case b.Capella != nil:
-		return "capella", nil
+		return spec.DataVersionCapella.String(), nil
 	case b.Deneb != nil:
-		return "deneb", nil
+		return spec.DataVersionDeneb.String(), nil
 	default:
 		return "", errors.New("no fork version set")
 	}
+}
+
+func (b *VersionedSignedBlindedBeaconBlock) VersionNumber() (uint64, error) {
+	switch {
+	case b.Bellatrix != nil:
+		return uint64(spec.DataVersionBellatrix), nil
+	case b.Capella != nil:
+		return uint64(spec.DataVersionCapella), nil
+	case b.Deneb != nil:
+		return uint64(spec.DataVersionDeneb), nil
+	default:
+		return 0, errors.New("no fork version set")
+	}
+}
+
+func (b *VersionedSignedBlindedBeaconBlock) WithVersionNumber() (VersionedSignedBlindedBeaconBlockWithVersionNumber, error) {
+	res := VersionedSignedBlindedBeaconBlockWithVersionNumber{}
+
+	versionNumber, err := b.VersionNumber()
+	if err != nil {
+		return res, err
+	}
+
+	res.VersionNumber = versionNumber
+	res.VersionedSignedBlindedBeaconBlock = b
+
+	return res, nil
+}
+
+func (b *VersionedSignedBlindedBeaconBlock) WithVersionName() (VersionedSignedBlindedBeaconBlockWithVersionName, error) {
+	res := VersionedSignedBlindedBeaconBlockWithVersionName{}
+
+	versionName, err := b.Version()
+	if err != nil {
+		return res, err
+	}
+
+	res.VersionName = versionName
+	res.VersionedSignedBlindedBeaconBlock = b
+
+	return res, nil
 }
