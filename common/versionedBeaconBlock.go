@@ -16,6 +16,16 @@ type VersionedBeaconBlock struct {
 	Deneb     *deneb.BeaconBlock     `json:"deneb,omitempty"`
 }
 
+type VersionedBeaconBlockWithVersionNumber struct {
+	VersionNumber uint64 `json:"version,string"`
+	VersionedBeaconBlock *VersionedBeaconBlock `json:"data"`
+}
+
+type VersionedBeaconBlockWithVersionName struct {
+	VersionName string `json:"version"`
+	VersionedBeaconBlock *VersionedBeaconBlock `json:"data"`
+}
+
 func (v *VersionedBeaconBlock) GetTree() (*ssz.Node, error) {
 	if v.Deneb != nil {
 		return v.Deneb.GetTree()

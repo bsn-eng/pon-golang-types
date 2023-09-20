@@ -4,6 +4,8 @@ import (
 	"errors"
 	"math/big"
 
+	"github.com/attestantio/go-eth2-client/spec"
+
 	bellatrix "github.com/attestantio/go-eth2-client/spec/bellatrix"
 	capella "github.com/attestantio/go-eth2-client/spec/capella"
 	deneb "github.com/attestantio/go-eth2-client/spec/deneb"
@@ -51,7 +53,7 @@ func ConstructBeaconBlock(
 	}
 
 	switch forkVersion {
-	case "bellatrix":
+	case spec.DataVersionBellatrix.String():
 		res.Bellatrix = &bellatrix.BeaconBlock{
 			Slot:          beaconBlock.Slot,
 			ProposerIndex: beaconBlock.ProposerIndex,
@@ -70,7 +72,7 @@ func ConstructBeaconBlock(
 				ExecutionPayload:  versionedExecutionPayload.Bellatrix,
 			},
 		}
-	case "capella":
+	case spec.DataVersionCapella.String():
 		res.Capella = &capella.BeaconBlock{
 			Slot:          beaconBlock.Slot,
 			ProposerIndex: beaconBlock.ProposerIndex,
@@ -90,7 +92,7 @@ func ConstructBeaconBlock(
 				BLSToExecutionChanges: beaconBlock.Body.BLSToExecutionChanges,
 			},
 		}
-	case "deneb":
+	case spec.DataVersionDeneb.String():
 		res.Deneb = &deneb.BeaconBlock{
 			Slot:          beaconBlock.Slot,
 			ProposerIndex: beaconBlock.ProposerIndex,
@@ -318,11 +320,11 @@ func (b *VersionedBeaconBlock) ToVersionedBlindedBeaconBlock() (VersionedBlinded
 	var forkVersion string
 	switch {
 	case b.Bellatrix != nil:
-		forkVersion = "bellatrix"
+		forkVersion = spec.DataVersionBellatrix.String()
 	case b.Capella != nil:
-		forkVersion = "capella"
+		forkVersion = spec.DataVersionCapella.String()
 	case b.Deneb != nil:
-		forkVersion = "deneb"
+		forkVersion = spec.DataVersionDeneb.String()
 	default:
 		return res, errors.New("unsupported fork version")
 	}
@@ -338,12 +340,53 @@ func (b *VersionedBeaconBlock) ToVersionedBlindedBeaconBlock() (VersionedBlinded
 func (b *VersionedBeaconBlock) Version() (string, error) {
 	switch {
 	case b.Bellatrix != nil:
-		return "bellatrix", nil
+		return spec.DataVersionBellatrix.String(), nil
 	case b.Capella != nil:
-		return "capella", nil
+		return spec.DataVersionCapella.String(), nil
 	case b.Deneb != nil:
-		return "deneb", nil
+		return spec.DataVersionDeneb.String(), nil
 	default:
 		return "", errors.New("no fork version set")
 	}
+}
+
+func (b *VersionedBeaconBlock) VersionNumber() (uint64, error) {
+	switch {
+	case b.Bellatrix != nil:
+		return uint64(spec.DataVersionBellatrix), nil
+	case b.Capella != nil:
+		return uint64(spec.DataVersionCapella), nil
+	case b.Deneb != nil:
+		return uint64(spec.DataVersionDeneb), nil
+	default:
+		return 0, errors.New("no fork version set")
+	}
+}
+
+func (b *VersionedBeaconBlock) WithVersionNumber() (VersionedBeaconBlockWithVersionNumber, error) {
+	res := VersionedBeaconBlockWithVersionNumber{}
+
+	versionNumber, err := b.VersionNumber()
+	if err != nil {
+		return res, err
+	}
+
+	res.VersionNumber = versionNumber
+	res.VersionedBeaconBlock = b
+
+	return res, nil
+}
+
+func (b *VersionedBeaconBlock) WithVersionName() (VersionedBeaconBlockWithVersionName, error) {
+	res := VersionedBeaconBlockWithVersionName{}
+
+	version, err := b.Version()
+	if err != nil {
+		return res, err
+	}
+
+	res.VersionName = version
+	res.VersionedBeaconBlock = b
+
+	return res, nil
 }

@@ -16,6 +16,16 @@ type VersionedExecutionPayload struct {
 	Deneb     *deneb.ExecutionPayload     `json:"deneb,omitempty"`
 }
 
+type VersionedExecutionPayloadWithVersionNumber struct {
+	VersionNumber uint64 `json:"version,string"`
+	VersionedExecutionPayload *VersionedExecutionPayload `json:"data"`
+}
+
+type VersionedExecutionPayloadWithVersionName struct {
+	VersionName string `json:"version"`
+	VersionedExecutionPayload *VersionedExecutionPayload `json:"data"`
+}
+
 func (v *VersionedExecutionPayload) GetTree() (*ssz.Node, error) {
 	if v.Deneb != nil {
 		return v.Deneb.GetTree()

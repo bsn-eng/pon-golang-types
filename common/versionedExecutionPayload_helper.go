@@ -4,6 +4,8 @@ import (
 	"errors"
 	"math/big"
 
+	"github.com/attestantio/go-eth2-client/spec"
+
 	bellatrix "github.com/attestantio/go-eth2-client/spec/bellatrix"
 	capella "github.com/attestantio/go-eth2-client/spec/capella"
 	deneb "github.com/attestantio/go-eth2-client/spec/deneb"
@@ -41,8 +43,8 @@ func ConstructExecutionPayload(
 	res := VersionedExecutionPayload{}
 
 	switch forkVersion {
-	case "bellatrix":
-		
+	case spec.DataVersionBellatrix.String():
+
 		baseFeePerGas := [32]byte(executionPayload.BaseFeePerGas.PaddedBytes(32))
 		baseFeePerGasLE := [32]byte{}
 		for i := 0; i < len(baseFeePerGas); i++ {
@@ -50,22 +52,22 @@ func ConstructExecutionPayload(
 		}
 
 		res.Bellatrix = &bellatrix.ExecutionPayload{
-			ParentHash: executionPayload.ParentHash,
-			FeeRecipient: executionPayload.FeeRecipient,
-			StateRoot: executionPayload.StateRoot,
-			ReceiptsRoot: executionPayload.ReceiptsRoot,
-			LogsBloom: executionPayload.LogsBloom,
-			PrevRandao: executionPayload.PrevRandao,
-			BlockNumber: executionPayload.BlockNumber,
-			GasLimit: executionPayload.GasLimit,
-			GasUsed: executionPayload.GasUsed,
-			Timestamp: executionPayload.Timestamp,
-			ExtraData: executionPayload.ExtraData,
+			ParentHash:    executionPayload.ParentHash,
+			FeeRecipient:  executionPayload.FeeRecipient,
+			StateRoot:     executionPayload.StateRoot,
+			ReceiptsRoot:  executionPayload.ReceiptsRoot,
+			LogsBloom:     executionPayload.LogsBloom,
+			PrevRandao:    executionPayload.PrevRandao,
+			BlockNumber:   executionPayload.BlockNumber,
+			GasLimit:      executionPayload.GasLimit,
+			GasUsed:       executionPayload.GasUsed,
+			Timestamp:     executionPayload.Timestamp,
+			ExtraData:     executionPayload.ExtraData,
 			BaseFeePerGas: baseFeePerGasLE,
-			Transactions: executionPayload.Transactions,
+			Transactions:  executionPayload.Transactions,
 		}
-	
-	case "capella":
+
+	case spec.DataVersionCapella.String():
 
 		baseFeePerGas := [32]byte(executionPayload.BaseFeePerGas.PaddedBytes(32))
 		baseFeePerGasLE := [32]byte{}
@@ -74,41 +76,41 @@ func ConstructExecutionPayload(
 		}
 
 		res.Capella = &capella.ExecutionPayload{
-			ParentHash: executionPayload.ParentHash,
-			FeeRecipient: executionPayload.FeeRecipient,
-			StateRoot: executionPayload.StateRoot,
-			ReceiptsRoot: executionPayload.ReceiptsRoot,
-			LogsBloom: executionPayload.LogsBloom,
-			PrevRandao: executionPayload.PrevRandao,
-			BlockNumber: executionPayload.BlockNumber,
-			GasLimit: executionPayload.GasLimit,
-			GasUsed: executionPayload.GasUsed,
-			Timestamp: executionPayload.Timestamp,
-			ExtraData: executionPayload.ExtraData,
+			ParentHash:    executionPayload.ParentHash,
+			FeeRecipient:  executionPayload.FeeRecipient,
+			StateRoot:     executionPayload.StateRoot,
+			ReceiptsRoot:  executionPayload.ReceiptsRoot,
+			LogsBloom:     executionPayload.LogsBloom,
+			PrevRandao:    executionPayload.PrevRandao,
+			BlockNumber:   executionPayload.BlockNumber,
+			GasLimit:      executionPayload.GasLimit,
+			GasUsed:       executionPayload.GasUsed,
+			Timestamp:     executionPayload.Timestamp,
+			ExtraData:     executionPayload.ExtraData,
 			BaseFeePerGas: baseFeePerGasLE,
-			BlockHash: executionPayload.BlockHash,
-			Transactions: executionPayload.Transactions,
-			Withdrawals: executionPayload.Withdrawals,
+			BlockHash:     executionPayload.BlockHash,
+			Transactions:  executionPayload.Transactions,
+			Withdrawals:   executionPayload.Withdrawals,
 		}
-	
-	case "deneb":
+
+	case spec.DataVersionDeneb.String():
 		res.Deneb = &deneb.ExecutionPayload{
-			ParentHash: executionPayload.ParentHash,
-			FeeRecipient: executionPayload.FeeRecipient,
-			StateRoot: executionPayload.StateRoot,
-			ReceiptsRoot: executionPayload.ReceiptsRoot,
-			LogsBloom: executionPayload.LogsBloom,
-			PrevRandao: executionPayload.PrevRandao,
-			BlockNumber: executionPayload.BlockNumber,
-			GasLimit: executionPayload.GasLimit,
-			GasUsed: executionPayload.GasUsed,
-			Timestamp: executionPayload.Timestamp,
-			ExtraData: executionPayload.ExtraData,
+			ParentHash:    executionPayload.ParentHash,
+			FeeRecipient:  executionPayload.FeeRecipient,
+			StateRoot:     executionPayload.StateRoot,
+			ReceiptsRoot:  executionPayload.ReceiptsRoot,
+			LogsBloom:     executionPayload.LogsBloom,
+			PrevRandao:    executionPayload.PrevRandao,
+			BlockNumber:   executionPayload.BlockNumber,
+			GasLimit:      executionPayload.GasLimit,
+			GasUsed:       executionPayload.GasUsed,
+			Timestamp:     executionPayload.Timestamp,
+			ExtraData:     executionPayload.ExtraData,
 			BaseFeePerGas: executionPayload.BaseFeePerGas,
-			BlockHash: executionPayload.BlockHash,
-			Transactions: executionPayload.Transactions,
-			Withdrawals: executionPayload.Withdrawals,
-			BlobGasUsed: executionPayload.BlobGasUsed,
+			BlockHash:     executionPayload.BlockHash,
+			Transactions:  executionPayload.Transactions,
+			Withdrawals:   executionPayload.Withdrawals,
+			BlobGasUsed:   executionPayload.BlobGasUsed,
 			ExcessBlobGas: executionPayload.ExcessBlobGas,
 		}
 
@@ -120,12 +122,11 @@ func ConstructExecutionPayload(
 	return res, nil
 }
 
-
 func (v *VersionedExecutionPayload) ToBaseExecutionPayload() (BaseExecutionPayload, error) {
 	res := BaseExecutionPayload{}
 
 	switch {
-	case v.Deneb != nil :
+	case v.Deneb != nil:
 		res.ParentHash = v.Deneb.ParentHash
 		res.FeeRecipient = v.Deneb.FeeRecipient
 		res.StateRoot = v.Deneb.StateRoot
@@ -144,7 +145,7 @@ func (v *VersionedExecutionPayload) ToBaseExecutionPayload() (BaseExecutionPaylo
 		res.BlobGasUsed = v.Deneb.BlobGasUsed
 		res.ExcessBlobGas = v.Deneb.ExcessBlobGas
 
-	case v.Capella != nil :
+	case v.Capella != nil:
 		baseFeePerGasBigInt := big.NewInt(0)
 		baseFeePerGasBE := [32]byte{}
 		for i := 0; i < len(v.Capella.BaseFeePerGas); i++ {
@@ -171,7 +172,7 @@ func (v *VersionedExecutionPayload) ToBaseExecutionPayload() (BaseExecutionPaylo
 		res.Transactions = v.Capella.Transactions
 		res.Withdrawals = v.Capella.Withdrawals
 
-	case v.Bellatrix != nil :
+	case v.Bellatrix != nil:
 		baseFeePerGasBigInt := big.NewInt(0)
 		baseFeePerGasBE := [32]byte{}
 		for i := 0; i < len(v.Bellatrix.BaseFeePerGas); i++ {
@@ -223,33 +224,33 @@ func (v *VersionedExecutionPayload) ToVersionedExecutionPayloadHeader() (Version
 	}
 
 	baseExecutionPayloadHeader := BaseExecutionPayloadHeader{
-		ParentHash: baseExecutionPayload.ParentHash,
-		FeeRecipient: baseExecutionPayload.FeeRecipient,
-		StateRoot: baseExecutionPayload.StateRoot,
-		ReceiptsRoot: baseExecutionPayload.ReceiptsRoot,
-		LogsBloom: baseExecutionPayload.LogsBloom,
-		PrevRandao: baseExecutionPayload.PrevRandao,
-		BlockNumber: baseExecutionPayload.BlockNumber,
-		GasLimit: baseExecutionPayload.GasLimit,
-		GasUsed: baseExecutionPayload.GasUsed,
-		Timestamp: baseExecutionPayload.Timestamp,
-		ExtraData: baseExecutionPayload.ExtraData,
-		BaseFeePerGas: baseExecutionPayload.BaseFeePerGas,
-		BlockHash: baseExecutionPayload.BlockHash,
+		ParentHash:       baseExecutionPayload.ParentHash,
+		FeeRecipient:     baseExecutionPayload.FeeRecipient,
+		StateRoot:        baseExecutionPayload.StateRoot,
+		ReceiptsRoot:     baseExecutionPayload.ReceiptsRoot,
+		LogsBloom:        baseExecutionPayload.LogsBloom,
+		PrevRandao:       baseExecutionPayload.PrevRandao,
+		BlockNumber:      baseExecutionPayload.BlockNumber,
+		GasLimit:         baseExecutionPayload.GasLimit,
+		GasUsed:          baseExecutionPayload.GasUsed,
+		Timestamp:        baseExecutionPayload.Timestamp,
+		ExtraData:        baseExecutionPayload.ExtraData,
+		BaseFeePerGas:    baseExecutionPayload.BaseFeePerGas,
+		BlockHash:        baseExecutionPayload.BlockHash,
 		TransactionsRoot: transactionsRoot,
-		WithdrawalsRoot: withdrawalsRoot,
-		BlobGasUsed: baseExecutionPayload.BlobGasUsed,
-		ExcessBlobGas: baseExecutionPayload.ExcessBlobGas,
+		WithdrawalsRoot:  withdrawalsRoot,
+		BlobGasUsed:      baseExecutionPayload.BlobGasUsed,
+		ExcessBlobGas:    baseExecutionPayload.ExcessBlobGas,
 	}
 
 	var forkVersion string
 	switch {
-	case v.Deneb != nil :
-		forkVersion = "deneb"
-	case v.Capella != nil :
-		forkVersion = "capella"
-	case v.Bellatrix != nil :
-		forkVersion = "bellatrix"
+	case v.Deneb != nil:
+		forkVersion = spec.DataVersionDeneb.String()
+	case v.Capella != nil:
+		forkVersion = spec.DataVersionCapella.String()
+	case v.Bellatrix != nil:
+		forkVersion = spec.DataVersionBellatrix.String()
 	default:
 		return res, errors.New("unsupported fork version")
 	}
@@ -264,13 +265,56 @@ func (v *VersionedExecutionPayload) ToVersionedExecutionPayloadHeader() (Version
 
 func (v *VersionedExecutionPayload) Version() (string, error) {
 	switch {
-	case v.Bellatrix != nil :
-		return "bellatrix", nil
-	case v.Capella != nil :
-		return "capella", nil
-	case v.Deneb != nil :
-		return "deneb", nil
+	case v.Bellatrix != nil:
+		return spec.DataVersionBellatrix.String(), nil
+	case v.Capella != nil:
+		return spec.DataVersionCapella.String(), nil
+	case v.Deneb != nil:
+		return spec.DataVersionDeneb.String(), nil
 	default:
 		return "", errors.New("no fork version set")
 	}
+}
+
+func (v *VersionedExecutionPayload) VersionNumber() (uint64, error) {
+	switch {
+	case v.Bellatrix != nil:
+		return uint64(spec.DataVersionBellatrix), nil
+	case v.Capella != nil:
+		return uint64(spec.DataVersionCapella), nil
+	case v.Deneb != nil:
+		return uint64(spec.DataVersionDeneb), nil
+	default:
+		return 0, errors.New("no fork version set")
+	}
+}
+
+func (v *VersionedExecutionPayload) WithVersionNumber() (VersionedExecutionPayloadWithVersionNumber, error) {
+	res := VersionedExecutionPayloadWithVersionNumber{}
+
+	versionNumber, err := v.VersionNumber()
+	if err != nil {
+		return res, err
+	}
+
+	res.VersionNumber = versionNumber
+	res.VersionedExecutionPayload = v
+	
+	return res, nil
+
+}
+
+func (v *VersionedExecutionPayload) WithVersionName() (VersionedExecutionPayloadWithVersionName, error) {
+	res := VersionedExecutionPayloadWithVersionName{}
+
+	versionName, err := v.Version()
+	if err != nil {
+		return res, err
+	}
+
+	res.VersionName = versionName
+	res.VersionedExecutionPayload = v
+	
+	return res, nil
+
 }
