@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"sync"
 	"math/big"
+	"errors"
 
 	commonTypes "github.com/bsn-eng/pon-golang-types/common"
 
@@ -80,4 +81,40 @@ func (b *BuilderBlockBid) MarshalJSON() ([]byte, error) {
 		Value:          b.Value.String(),
 		ExecutionPayloadHeader: b.ExecutionPayloadHeader,
 	})
+}
+
+func (b *BuilderBlockBid) UnmarshalJSON(input []byte) error {
+	var data builderBlockBidJSON
+	if err := json.Unmarshal(input, &data); err != nil {
+		return err
+	}
+	return b.unpack(&data)
+}
+
+func (b *BuilderBlockBid) unpack(data *builderBlockBidJSON) error {
+	if data.Pubkey == "" {
+		return errors.New("pubkey missing")
+	}
+	pubkey, err := hexutil.Decode(data.Pubkey)
+	if err != nil {
+		return err
+	}
+	copy(b.Pubkey[:], pubkey)
+
+	if data.Value == "" {
+		return errors.New("value missing")
+	}
+	value, ok := big.NewInt(0).SetString(data.Value, 10)
+	if !ok {
+		return errors.New("invalid value for value")
+	}
+	b.Value = value
+
+	if data.ExecutionPayloadHeader == nil {
+		return errors.New("header missing")
+	}
+	b.ExecutionPayloadHeader = data.ExecutionPayloadHeader
+
+	return nil
+
 }
