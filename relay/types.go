@@ -69,14 +69,14 @@ type BuilderBlockBid struct {
 }
 
 type builderBlockBidJSON struct {
-	ProposerPubkey string `json:"pubkey" ssz-size:"48"`
+	Pubkey string `json:"pubkey" ssz-size:"48"`
 	Value          string `json:"value"`
 	ExecutionPayloadHeader *commonTypes.VersionedExecutionPayloadHeader `json:"header"`
 }
 
 func (b *BuilderBlockBid) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&builderBlockBidJSON{
-		ProposerPubkey: b.ProposerPubkey.String(),
+		Pubkey: b.Pubkey.String(),
 		Value:          b.Value.String(),
 		ExecutionPayloadHeader: b.ExecutionPayloadHeader,
 	})
