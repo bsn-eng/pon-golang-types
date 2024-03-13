@@ -17,12 +17,12 @@ type VersionedSignedBlindedBeaconBlock struct {
 }
 
 type VersionedSignedBlindedBeaconBlockWithVersionNumber struct {
-	VersionNumber uint64 `json:"version,string"`
+	VersionNumber                     uint64                             `json:"version,string"`
 	VersionedSignedBlindedBeaconBlock *VersionedSignedBlindedBeaconBlock `json:"data"`
 }
 
 type VersionedSignedBlindedBeaconBlockWithVersionName struct {
-	VersionName string `json:"version"`
+	VersionName                       string                             `json:"version"`
 	VersionedSignedBlindedBeaconBlock *VersionedSignedBlindedBeaconBlock `json:"data"`
 }
 
@@ -173,7 +173,7 @@ func (v *VersionedSignedBlindedBeaconBlock) UnmarshalJSON(input []byte) error {
 	}
 	v.Bellatrix = nil
 
-	return errors.New("unsupported ExecutionPayload type")
+	return errors.New("unsupported SignedBlindedBeaconBlock type")
 
 }
 
@@ -207,7 +207,7 @@ func (v *VersionedSignedBlindedBeaconBlock) UnmarshalSSZ(buf []byte) error {
 	}
 	v.Bellatrix = nil
 
-	return errors.New("unsupported ExecutionPayload type")
+	return errors.New("unsupported SignedBlindedBeaconBlock type")
 
 }
 
@@ -241,6 +241,6 @@ func (v *VersionedSignedBlindedBeaconBlock) UnmarshalYAML(input []byte) error {
 	}
 	v.Bellatrix = nil
 
-	return errors.New("unsupported ExecutionPayload type")
+	return errors.New("unsupported SignedBlindedBeaconBlock type")
 
 }

@@ -17,12 +17,12 @@ type VersionedExecutionPayloadHeader struct {
 }
 
 type VersionedExecutionPayloadHeaderWithVersionNumber struct {
-	VersionNumber uint64 `json:"version,string"`
+	VersionNumber                   uint64                           `json:"version,string"`
 	VersionedExecutionPayloadHeader *VersionedExecutionPayloadHeader `json:"data"`
 }
 
 type VersionedExecutionPayloadHeaderWithVersionName struct {
-	VersionName string `json:"version"`
+	VersionName                     string                           `json:"version"`
 	VersionedExecutionPayloadHeader *VersionedExecutionPayloadHeader `json:"data"`
 }
 
@@ -173,7 +173,7 @@ func (v *VersionedExecutionPayloadHeader) UnmarshalJSON(input []byte) error {
 	}
 	v.Bellatrix = nil
 
-	return errors.New("unsupported ExecutionPayload type")
+	return errors.New("unsupported ExecutionPayloadHeader type")
 
 }
 
@@ -207,7 +207,7 @@ func (v *VersionedExecutionPayloadHeader) UnmarshalSSZ(buf []byte) error {
 	}
 	v.Bellatrix = nil
 
-	return errors.New("unsupported ExecutionPayload type")
+	return errors.New("unsupported ExecutionPayloadHeader type")
 
 }
 
@@ -241,6 +241,6 @@ func (v *VersionedExecutionPayloadHeader) UnmarshalYAML(input []byte) error {
 	}
 	v.Bellatrix = nil
 
-	return errors.New("unsupported ExecutionPayload type")
+	return errors.New("unsupported ExecutionPayloadHeader type")
 
 }
