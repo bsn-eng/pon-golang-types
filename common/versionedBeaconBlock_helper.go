@@ -37,7 +37,7 @@ type BaseBeaconBlockBody struct {
 	SyncAggregate         *altair.SyncAggregate
 	ExecutionPayload      *BaseExecutionPayload
 	BLSToExecutionChanges []*capella.SignedBLSToExecutionChange `ssz-max:"16"`
-	BlobKzgCommitments    []deneb.KzgCommitment                 `ssz-max:"4096" ssz-size:"?,48"`
+	BlobKZGCommitments    []deneb.KZGCommitment                 `ssz-max:"4096" ssz-size:"?,48"`
 }
 
 func ConstructBeaconBlock(
@@ -110,7 +110,7 @@ func ConstructBeaconBlock(
 				SyncAggregate:         beaconBlock.Body.SyncAggregate,
 				ExecutionPayload:      versionedExecutionPayload.Deneb,
 				BLSToExecutionChanges: beaconBlock.Body.BLSToExecutionChanges,
-				BlobKzgCommitments:    beaconBlock.Body.BlobKzgCommitments,
+				BlobKZGCommitments:    beaconBlock.Body.BlobKZGCommitments,
 			},
 		}
 	default:
@@ -250,7 +250,7 @@ func (b *VersionedBeaconBlock) ToBaseBeaconBlock() (BaseBeaconBlock, error) {
 				Withdrawals:   b.Deneb.Body.ExecutionPayload.Withdrawals,
 			},
 			BLSToExecutionChanges: b.Deneb.Body.BLSToExecutionChanges,
-			BlobKzgCommitments:    b.Deneb.Body.BlobKzgCommitments,
+			BlobKZGCommitments:    b.Deneb.Body.BlobKZGCommitments,
 		}
 	default:
 		return res, errors.New("unsupported fork version")
@@ -313,7 +313,7 @@ func (b *VersionedBeaconBlock) ToVersionedBlindedBeaconBlock() (VersionedBlinded
 				ExcessBlobGas:    baseBeaconBlock.Body.ExecutionPayload.ExcessBlobGas,
 			},
 			BLSToExecutionChanges: baseBeaconBlock.Body.BLSToExecutionChanges,
-			BlobKzgCommitments:    baseBeaconBlock.Body.BlobKzgCommitments,
+			BlobKZGCommitments:    baseBeaconBlock.Body.BlobKZGCommitments,
 		},
 	}
 

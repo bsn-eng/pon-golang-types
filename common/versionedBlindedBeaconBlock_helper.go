@@ -41,7 +41,7 @@ type BaseBlindedBeaconBlockBody struct {
 	SyncAggregate          *altair.SyncAggregate
 	ExecutionPayloadHeader *BaseExecutionPayloadHeader
 	BLSToExecutionChanges  []*capella.SignedBLSToExecutionChange `ssz-max:"16"`
-	BlobKzgCommitments     []deneb.KzgCommitment                 `ssz-max:"4096" ssz-size:"?,48"`
+	BlobKZGCommitments     []deneb.KZGCommitment                 `ssz-max:"4096" ssz-size:"?,48"`
 }
 
 func ConstructBlindedBeaconBlock(
@@ -114,7 +114,7 @@ func ConstructBlindedBeaconBlock(
 				SyncAggregate:          blindedBeaconBlock.Body.SyncAggregate,
 				ExecutionPayloadHeader: versionedExecutionPayloadHeader.Deneb,
 				BLSToExecutionChanges:  blindedBeaconBlock.Body.BLSToExecutionChanges,
-				BlobKzgCommitments:     blindedBeaconBlock.Body.BlobKzgCommitments,
+				BlobKZGCommitments:     blindedBeaconBlock.Body.BlobKZGCommitments,
 			},
 		}
 	default:
@@ -251,7 +251,7 @@ func (b *VersionedBlindedBeaconBlock) ToBaseBlindedBeaconBlock() (BaseBlindedBea
 				WithdrawalsRoot:  b.Deneb.Body.ExecutionPayloadHeader.WithdrawalsRoot,
 			},
 			BLSToExecutionChanges: b.Deneb.Body.BLSToExecutionChanges,
-			BlobKzgCommitments:    b.Deneb.Body.BlobKzgCommitments,
+			BlobKZGCommitments:    b.Deneb.Body.BlobKZGCommitments,
 		}
 	default:
 		return res, errors.New("unsupported fork version")
@@ -305,7 +305,7 @@ func (b *VersionedBlindedBeaconBlock) ToVersionedBeaconBlock() (VersionedBeaconB
 				ExcessBlobGas: baseBlindedBeaconBlock.Body.ExecutionPayloadHeader.ExcessBlobGas,
 			},
 			BLSToExecutionChanges: baseBlindedBeaconBlock.Body.BLSToExecutionChanges,
-			BlobKzgCommitments:    baseBlindedBeaconBlock.Body.BlobKzgCommitments,
+			BlobKZGCommitments:    baseBlindedBeaconBlock.Body.BlobKZGCommitments,
 		},
 	}
 
@@ -357,7 +357,7 @@ func (b *VersionedBlindedBeaconBlock) VersionNumber() (uint64, error) {
 
 func (b *VersionedBlindedBeaconBlock) WithVersionNumber() (VersionedBlindedBeaconBlockWithVersionNumber, error) {
 	res := VersionedBlindedBeaconBlockWithVersionNumber{}
-	
+
 	versionNumber, err := b.VersionNumber()
 	if err != nil {
 		return res, err
@@ -371,7 +371,7 @@ func (b *VersionedBlindedBeaconBlock) WithVersionNumber() (VersionedBlindedBeaco
 
 func (b *VersionedBlindedBeaconBlock) WithVersionName() (VersionedBlindedBeaconBlockWithVersionName, error) {
 	res := VersionedBlindedBeaconBlockWithVersionName{}
-	
+
 	versionName, err := b.Version()
 	if err != nil {
 		return res, err

@@ -187,7 +187,7 @@ func (b *VersionedSignedBeaconBlock) ToBaseSignedBeaconBlock() (BaseSignedBeacon
 					Withdrawals:   b.Deneb.Message.Body.ExecutionPayload.Withdrawals,
 				},
 				BLSToExecutionChanges: b.Deneb.Message.Body.BLSToExecutionChanges,
-				BlobKzgCommitments:    b.Deneb.Message.Body.BlobKzgCommitments,
+				BlobKZGCommitments:    b.Deneb.Message.Body.BlobKZGCommitments,
 			},
 		}
 		res.Signature = b.Deneb.Signature
