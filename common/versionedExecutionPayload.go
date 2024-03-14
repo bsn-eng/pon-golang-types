@@ -5,10 +5,10 @@ import (
 
 	ssz "github.com/ferranbt/fastssz"
 
+	denebApi "github.com/attestantio/go-builder-client/api/deneb"
 	bellatrix "github.com/attestantio/go-eth2-client/spec/bellatrix"
 	capella "github.com/attestantio/go-eth2-client/spec/capella"
 	deneb "github.com/attestantio/go-eth2-client/spec/deneb"
-	denebApi "github.com/attestantio/go-builder-client/api/deneb"
 )
 
 type VersionedExecutionPayload struct {
@@ -18,9 +18,9 @@ type VersionedExecutionPayload struct {
 }
 
 type VersionedExecutionPayloadV2 struct {
-	Bellatrix *bellatrix.ExecutionPayload `json:"bellatrix,omitempty"`
-	Capella   *capella.ExecutionPayload   `json:"capella,omitempty"`
-	Deneb     *denebApi.ExecutionPayloadAndBlobsBundle     `json:"deneb,omitempty"`
+	Bellatrix *bellatrix.ExecutionPayload              `json:"bellatrix,omitempty"`
+	Capella   *capella.ExecutionPayload                `json:"capella,omitempty"`
+	Deneb     *denebApi.ExecutionPayloadAndBlobsBundle `json:"deneb,omitempty"`
 }
 
 type VersionedExecutionPayloadWithVersionNumber struct {
@@ -34,12 +34,12 @@ type VersionedExecutionPayloadWithVersionName struct {
 }
 
 type VersionedExecutionPayloadV2WithVersionNumber struct {
-	VersionNumber 		   uint64                     `json:"version,string"`
+	VersionNumber             uint64                       `json:"version,string"`
 	VersionedExecutionPayload *VersionedExecutionPayloadV2 `json:"data"`
 }
 
 type VersionedExecutionPayloadV2WithVersionName struct {
-	VersionName               string                     `json:"version"`
+	VersionName               string                       `json:"version"`
 	VersionedExecutionPayload *VersionedExecutionPayloadV2 `json:"data"`
 }
 
@@ -327,19 +327,21 @@ func (v *VersionedExecutionPayloadV2) UnmarshalJSON(input []byte) error {
 	}
 	v.Deneb = nil
 
-	v.Capella = &capella.ExecutionPayload{}
-	err = v.Capella.UnmarshalJSON(input)
+	// else create a v1 object and try to unmarshal
+	// it would try the deneb payload without blobs
+	// and older fork versions
+	v1 := &VersionedExecutionPayload{}
+	err = v1.UnmarshalJSON(input)
 	if err == nil {
+		// convert to v2
+		v2, err := v1.ToVersionedExecutionPayloadV2()
+		// if it was a v1 deneb object without blobs, it would have the v2 payload without blobsbundle
+		if err != nil {
+			return err
+		}
+		*v = v2
 		return nil
 	}
-	v.Capella = nil
-
-	v.Bellatrix = &bellatrix.ExecutionPayload{}
-	err = v.Bellatrix.UnmarshalJSON(input)
-	if err == nil {
-		return nil
-	}
-	v.Bellatrix = nil
 
 	return errors.New("unsupported ExecutionPayload type")
 
@@ -395,19 +397,21 @@ func (v *VersionedExecutionPayloadV2) UnmarshalSSZ(buf []byte) error {
 	}
 	v.Deneb = nil
 
-	v.Capella = &capella.ExecutionPayload{}
-	err = v.Capella.UnmarshalSSZ(buf)
+	// else create a v1 object and try to unmarshal
+	// it would try the deneb payload without blobs
+	// and older fork versions
+	v1 := &VersionedExecutionPayload{}
+	err = v1.UnmarshalSSZ(buf)
 	if err == nil {
+		// convert to v2
+		v2, err := v1.ToVersionedExecutionPayloadV2()
+		// if it was a v1 deneb object without blobs, it would have the v2 payload without blobsbundle
+		if err != nil {
+			return err
+		}
+		*v = v2
 		return nil
 	}
-	v.Capella = nil
-
-	v.Bellatrix = &bellatrix.ExecutionPayload{}
-	err = v.Bellatrix.UnmarshalSSZ(buf)
-	if err == nil {
-		return nil
-	}
-	v.Bellatrix = nil
 
 	return errors.New("unsupported ExecutionPayload type")
 
@@ -463,19 +467,21 @@ func (v *VersionedExecutionPayloadV2) UnmarshalYAML(input []byte) error {
 	}
 	v.Deneb = nil
 
-	v.Capella = &capella.ExecutionPayload{}
-	err = v.Capella.UnmarshalYAML(input)
+	// else create a v1 object and try to unmarshal
+	// it would try the deneb payload without blobs
+	// and older fork versions
+	v1 := &VersionedExecutionPayload{}
+	err = v1.UnmarshalYAML(input)
 	if err == nil {
+		// convert to v2
+		v2, err := v1.ToVersionedExecutionPayloadV2()
+		// if it was a v1 deneb object without blobs, it would have the v2 payload without blobsbundle
+		if err != nil {
+			return err
+		}
+		*v = v2
 		return nil
 	}
-	v.Capella = nil
-
-	v.Bellatrix = &bellatrix.ExecutionPayload{}
-	err = v.Bellatrix.UnmarshalYAML(input)
-	if err == nil {
-		return nil
-	}
-	v.Bellatrix = nil
 
 	return errors.New("unsupported ExecutionPayload type")
 
