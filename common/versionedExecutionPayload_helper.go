@@ -6,6 +6,7 @@ import (
 
 	"github.com/attestantio/go-eth2-client/spec"
 
+	denebApi "github.com/attestantio/go-builder-client/api/deneb"
 	bellatrix "github.com/attestantio/go-eth2-client/spec/bellatrix"
 	capella "github.com/attestantio/go-eth2-client/spec/capella"
 	deneb "github.com/attestantio/go-eth2-client/spec/deneb"
@@ -33,6 +34,7 @@ type BaseExecutionPayload struct {
 	Withdrawals   []*capella.Withdrawal   `ssz-max:"16"`
 	BlobGasUsed   uint64
 	ExcessBlobGas uint64
+	BlobsBundle   *denebApi.BlobsBundle
 }
 
 func ConstructExecutionPayload(
@@ -122,6 +124,41 @@ func ConstructExecutionPayload(
 	return res, nil
 }
 
+func ConstructExecutionPayloadV2(
+	forkVersion string,
+	executionPayload BaseExecutionPayload,
+) (VersionedExecutionPayloadV2, error) {
+
+	res := VersionedExecutionPayloadV2{}
+
+	v1ExecutionPayload, err := ConstructExecutionPayload(forkVersion, executionPayload)
+	if err != nil {
+		return res, err
+	}
+
+	// Prior step would have already checked if the forkVersion is supported
+
+	// So can now check for if deneb+ to add additional data
+	v1ForkVersion, err := v1ExecutionPayload.VersionNumber()
+	if err != nil {
+		return res, err
+	}
+	if v1ForkVersion >= uint64(spec.DataVersionDeneb) {
+		res.Deneb = &denebApi.ExecutionPayloadAndBlobsBundle{
+			ExecutionPayload: v1ExecutionPayload.Deneb,
+			BlobsBundle:      executionPayload.BlobsBundle,
+		}
+	} else {
+		// Versions lower that deneb are forward compatible in conversion
+		res, err = v1ExecutionPayload.ToVersionedExecutionPayloadV2()
+		if err != nil {
+			return res, err
+		}
+	}
+
+	return res, nil
+}
+
 func (v *VersionedExecutionPayload) ToBaseExecutionPayload() (BaseExecutionPayload, error) {
 	res := BaseExecutionPayload{}
 
@@ -204,6 +241,73 @@ func (v *VersionedExecutionPayload) ToBaseExecutionPayload() (BaseExecutionPaylo
 	return res, nil
 }
 
+func (v *VersionedExecutionPayload) ToVersionedExecutionPayloadV2() (VersionedExecutionPayloadV2, error) {
+	// v1 is not forward compatible with v2 for deneb+
+	// For deneb converting forward would result in missing blobs data
+	res := VersionedExecutionPayloadV2{}
+
+	switch {
+	case v.Deneb != nil:
+		res.Deneb = &denebApi.ExecutionPayloadAndBlobsBundle{
+			ExecutionPayload: v.Deneb,
+			BlobsBundle:      &denebApi.BlobsBundle{}, // Cannot obtain blobs data from v1
+		}
+	case v.Capella != nil:
+		res.Capella = v.Capella
+	case v.Bellatrix != nil:
+		res.Bellatrix = v.Bellatrix
+	default:
+		return res, errors.New("unsupported fork version")
+	}
+
+	return res, nil
+
+}
+
+func (v *VersionedExecutionPayloadV2) ToVersionedExecutionPayload() (VersionedExecutionPayload, error) {
+	// v2 is backward compatible with all v1 versions
+	res := VersionedExecutionPayload{}
+
+	switch {
+	case v.Deneb != nil:
+		res.Deneb = v.Deneb.ExecutionPayload
+	case v.Capella != nil:
+		res.Capella = v.Capella
+	case v.Bellatrix != nil:
+		res.Bellatrix = v.Bellatrix
+	default:
+		return res, errors.New("unsupported fork version")
+	}
+
+	return res, nil
+
+}
+
+func (v *VersionedExecutionPayloadV2) ToBaseExecutionPayload() (BaseExecutionPayload, error) {
+	res := BaseExecutionPayload{}
+
+	v1ExecutionPayload, err := v.ToVersionedExecutionPayload()
+	if err != nil {
+		return res, err
+	}
+
+	res, err = v1ExecutionPayload.ToBaseExecutionPayload()
+	if err != nil {
+		return res, err
+	}
+
+	// Additional logic for after v1 execution payloads
+	vNum, err := v.VersionNumber()
+	if err != nil {
+		return res, err
+	}
+	if vNum >= uint64(spec.DataVersionDeneb) {
+		res.BlobsBundle = v.Deneb.BlobsBundle
+	}
+
+	return res, nil
+}
+
 // Converts the VersionedExecutionPayload to a VersionedExecutionPayloadHeader
 func (v *VersionedExecutionPayload) ToVersionedExecutionPayloadHeader() (VersionedExecutionPayloadHeader, error) {
 	res := VersionedExecutionPayloadHeader{}
@@ -263,7 +367,36 @@ func (v *VersionedExecutionPayload) ToVersionedExecutionPayloadHeader() (Version
 	return res, nil
 }
 
+func (v *VersionedExecutionPayloadV2) ToVersionedExecutionPayloadHeader() (VersionedExecutionPayloadHeader, error) {
+	res := VersionedExecutionPayloadHeader{}
+
+	v1ExecutionPayload, err := v.ToVersionedExecutionPayload()
+	if err != nil {
+		return res, err
+	}
+
+	res, err = v1ExecutionPayload.ToVersionedExecutionPayloadHeader()
+	if err != nil {
+		return res, err
+	}
+
+	return res, nil
+}
+
 func (v *VersionedExecutionPayload) Version() (string, error) {
+	switch {
+	case v.Bellatrix != nil:
+		return spec.DataVersionBellatrix.String(), nil
+	case v.Capella != nil:
+		return spec.DataVersionCapella.String(), nil
+	case v.Deneb != nil:
+		return spec.DataVersionDeneb.String(), nil
+	default:
+		return "", errors.New("no fork version set")
+	}
+}
+
+func (v *VersionedExecutionPayloadV2) Version() (string, error) {
 	switch {
 	case v.Bellatrix != nil:
 		return spec.DataVersionBellatrix.String(), nil
@@ -289,6 +422,19 @@ func (v *VersionedExecutionPayload) VersionNumber() (uint64, error) {
 	}
 }
 
+func (v *VersionedExecutionPayloadV2) VersionNumber() (uint64, error) {
+	switch {
+	case v.Bellatrix != nil:
+		return uint64(spec.DataVersionBellatrix), nil
+	case v.Capella != nil:
+		return uint64(spec.DataVersionCapella), nil
+	case v.Deneb != nil:
+		return uint64(spec.DataVersionDeneb), nil
+	default:
+		return 0, errors.New("no fork version set")
+	}
+}
+
 func (v *VersionedExecutionPayload) WithVersionNumber() (VersionedExecutionPayloadWithVersionNumber, error) {
 	res := VersionedExecutionPayloadWithVersionNumber{}
 
@@ -299,7 +445,22 @@ func (v *VersionedExecutionPayload) WithVersionNumber() (VersionedExecutionPaylo
 
 	res.VersionNumber = versionNumber
 	res.VersionedExecutionPayload = v
-	
+
+	return res, nil
+
+}
+
+func (v *VersionedExecutionPayloadV2) WithVersionNumber() (VersionedExecutionPayloadV2WithVersionNumber, error) {
+	res := VersionedExecutionPayloadV2WithVersionNumber{}
+
+	versionNumber, err := v.VersionNumber()
+	if err != nil {
+		return res, err
+	}
+
+	res.VersionNumber = versionNumber
+	res.VersionedExecutionPayload = v
+
 	return res, nil
 
 }
@@ -314,7 +475,22 @@ func (v *VersionedExecutionPayload) WithVersionName() (VersionedExecutionPayload
 
 	res.VersionName = versionName
 	res.VersionedExecutionPayload = v
-	
+
+	return res, nil
+
+}
+
+func (v *VersionedExecutionPayloadV2) WithVersionName() (VersionedExecutionPayloadV2WithVersionName, error) {
+	res := VersionedExecutionPayloadV2WithVersionName{}
+
+	versionName, err := v.Version()
+	if err != nil {
+		return res, err
+	}
+
+	res.VersionName = versionName
+	res.VersionedExecutionPayload = v
+
 	return res, nil
 
 }

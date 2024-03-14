@@ -249,6 +249,8 @@ func (b *VersionedBlindedBeaconBlock) ToBaseBlindedBeaconBlock() (BaseBlindedBea
 				BlockHash:        b.Deneb.Body.ExecutionPayloadHeader.BlockHash,
 				TransactionsRoot: b.Deneb.Body.ExecutionPayloadHeader.TransactionsRoot,
 				WithdrawalsRoot:  b.Deneb.Body.ExecutionPayloadHeader.WithdrawalsRoot,
+				BlobGasUsed:      b.Deneb.Body.ExecutionPayloadHeader.BlobGasUsed,
+				ExcessBlobGas:    b.Deneb.Body.ExecutionPayloadHeader.ExcessBlobGas,
 			},
 			BLSToExecutionChanges: b.Deneb.Body.BLSToExecutionChanges,
 			BlobKZGCommitments:    b.Deneb.Body.BlobKZGCommitments,
@@ -299,8 +301,8 @@ func (b *VersionedBlindedBeaconBlock) ToVersionedBeaconBlock() (VersionedBeaconB
 				ExtraData:     baseBlindedBeaconBlock.Body.ExecutionPayloadHeader.ExtraData,
 				BaseFeePerGas: baseBlindedBeaconBlock.Body.ExecutionPayloadHeader.BaseFeePerGas,
 				BlockHash:     baseBlindedBeaconBlock.Body.ExecutionPayloadHeader.BlockHash,
-				// Transactions:
-				// Withdrawals:
+				// Transactions: cannot be derived from the blinded beacon block
+				// Withdrawals: cannot be derived from the blinded beacon block
 				BlobGasUsed:   baseBlindedBeaconBlock.Body.ExecutionPayloadHeader.BlobGasUsed,
 				ExcessBlobGas: baseBlindedBeaconBlock.Body.ExecutionPayloadHeader.ExcessBlobGas,
 			},

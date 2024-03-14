@@ -6,6 +6,7 @@ import (
 
 	"github.com/attestantio/go-eth2-client/spec"
 
+	denebApi "github.com/attestantio/go-builder-client/api/deneb"
 	bellatrix "github.com/attestantio/go-eth2-client/spec/bellatrix"
 	capella "github.com/attestantio/go-eth2-client/spec/capella"
 	deneb "github.com/attestantio/go-eth2-client/spec/deneb"
@@ -248,6 +249,11 @@ func (b *VersionedBeaconBlock) ToBaseBeaconBlock() (BaseBeaconBlock, error) {
 				BlockHash:     b.Deneb.Body.ExecutionPayload.BlockHash,
 				Transactions:  b.Deneb.Body.ExecutionPayload.Transactions,
 				Withdrawals:   b.Deneb.Body.ExecutionPayload.Withdrawals,
+				BlobGasUsed:   b.Deneb.Body.ExecutionPayload.BlobGasUsed,
+				ExcessBlobGas: b.Deneb.Body.ExecutionPayload.ExcessBlobGas,
+				BlobsBundle: &denebApi.BlobsBundle{
+					Commitments: b.Deneb.Body.BlobKZGCommitments,
+				},
 			},
 			BLSToExecutionChanges: b.Deneb.Body.BLSToExecutionChanges,
 			BlobKZGCommitments:    b.Deneb.Body.BlobKZGCommitments,

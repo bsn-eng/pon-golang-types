@@ -185,6 +185,8 @@ func (b *VersionedSignedBeaconBlock) ToBaseSignedBeaconBlock() (BaseSignedBeacon
 					BlockHash:     b.Deneb.Message.Body.ExecutionPayload.BlockHash,
 					Transactions:  b.Deneb.Message.Body.ExecutionPayload.Transactions,
 					Withdrawals:   b.Deneb.Message.Body.ExecutionPayload.Withdrawals,
+					BlobGasUsed:   b.Deneb.Message.Body.ExecutionPayload.BlobGasUsed,
+					ExcessBlobGas: b.Deneb.Message.Body.ExecutionPayload.ExcessBlobGas,
 				},
 				BLSToExecutionChanges: b.Deneb.Message.Body.BLSToExecutionChanges,
 				BlobKZGCommitments:    b.Deneb.Message.Body.BlobKZGCommitments,

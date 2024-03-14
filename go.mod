@@ -3,6 +3,7 @@ module github.com/bsn-eng/pon-golang-types
 go 1.20
 
 require (
+	github.com/attestantio/go-builder-client v0.4.3
 	github.com/attestantio/go-eth2-client v0.19.10
 	github.com/ethereum/go-ethereum v1.11.6
 	github.com/ferranbt/fastssz v0.1.3
