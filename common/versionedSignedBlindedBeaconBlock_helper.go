@@ -185,6 +185,8 @@ func (b *VersionedSignedBlindedBeaconBlock) ToBaseSignedBlindedBeaconBlock() (Ba
 					BlockHash:        b.Deneb.Message.Body.ExecutionPayloadHeader.BlockHash,
 					TransactionsRoot: b.Deneb.Message.Body.ExecutionPayloadHeader.TransactionsRoot,
 					WithdrawalsRoot:  b.Deneb.Message.Body.ExecutionPayloadHeader.WithdrawalsRoot,
+					BlobGasUsed:      b.Deneb.Message.Body.ExecutionPayloadHeader.BlobGasUsed,
+					ExcessBlobGas:    b.Deneb.Message.Body.ExecutionPayloadHeader.ExcessBlobGas,
 				},
 				BLSToExecutionChanges: b.Deneb.Message.Body.BLSToExecutionChanges,
 				BlobKZGCommitments:    b.Deneb.Message.Body.BlobKZGCommitments,
